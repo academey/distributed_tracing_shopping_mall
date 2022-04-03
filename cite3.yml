@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: search
+spec:
+  selector:
+    matchLabels:
+      app: search
+  template:
+    metadata:
+      labels:
+        app: search
+    spec:
+      containers:
+        - name: search
+          # image: ghcr.io/subicura/voting/search
+          image: yuonsinsa/node-webapp-search:1.1
+          env:
+            - name: PORT
+              value: "3000"
+            - name: URL_purchase
+              value: "http://localhost:8000"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: search
+spec:
+  type: NodePort
+  ports:
+    - port: 3000
+      nodePort: 31000
+      protocol: TCP
+  selector:
+    app: search
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: purchase
+spec:
+  selector:
+    matchLabels:
+      app: purchase
+  template:
+    metadata:
+      labels:
+        app: purchase
+    spec:
+      containers:
+        - name: purchase
+          image: yuonsinsa/node-webapp-purchase:1.1
+          env:
+            - name: PORT
+              value: "8000"
+            - name: URL_search
+              value: "http://localhost:3000"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8000
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8000
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: purchase
+spec:
+  type: NodePort
+  ports:
+    - port: 8000
+      nodePort: 31001
+      protocol: TCP
+  selector:
+    app: purchase
