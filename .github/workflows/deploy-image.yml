@@ -37,18 +37,18 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      - name: Build and push Docker image
+      - name: Build and push Docker image - purchase
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./webapp.v2/webapp-purchase
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: purchase-${{ steps.meta.outputs.tags }}
+          labels: purchase-${{ steps.meta.outputs.labels }}
 
-      - name: Build and push Docker image
+      - name: Build and push Docker image - search
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./webapp.v2/webapp-search
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: search-${{ steps.meta.outputs.tags }}
+          labels: search-${{ steps.meta.outputs.labels }}
