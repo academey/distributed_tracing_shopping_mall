@@ -42,7 +42,7 @@ jobs:
         with:
           context: ./webapp.v2/webapp-purchase
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: purchase
           labels: purchase-${{ steps.meta.outputs.labels }}
 
       - name: Build and push Docker image - search
@@ -50,5 +50,5 @@ jobs:
         with:
           context: ./webapp.v2/webapp-search
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: search
           labels: search-${{ steps.meta.outputs.labels }}
