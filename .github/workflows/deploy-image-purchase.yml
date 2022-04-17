@@ -43,6 +43,5 @@ jobs:
         with:
           context: ./webapp.v2/webapp-purchase
           push: true
-          docker pull ghcr.io/academey/distributed_tracing_shopping_mall:main
           tags: ${{ steps.meta.outputs.tags }}
           labels: purchase-${{ steps.meta.outputs.labels }}
