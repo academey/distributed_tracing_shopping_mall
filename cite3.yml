@@ -12,9 +12,8 @@ spec:
         app: search
     spec:
       containers:
-        - name: search
-          # image: ghcr.io/subicura/voting/search
-          image: yuonsinsa/node-webapp-search:1.1
+        - name: search   
+          image: ghcr.io/academey/distributed_tracing_shopping_mall-purchase:main
           env:
             - name: PORT
               value: "3000"
@@ -62,7 +61,7 @@ spec:
     spec:
       containers:
         - name: purchase
-          image: yuonsinsa/node-webapp-purchase:1.1
+          image: ghcr.io/academey/distributed_tracing_shopping_mall-purchase:main
           env:
             - name: PORT
               value: "8000"

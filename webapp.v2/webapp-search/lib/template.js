@@ -1,6 +1,6 @@
-module.exports = {
-  HTML:function(title, list, body, control){
-    return `
+export default {
+    HTML: function (title, list, body, control) {
+        return `
     <!doctype html>
     <html>
     <head>
@@ -16,15 +16,15 @@ module.exports = {
     </body>
     </html>
     `;
-  },
-  p_list:function(filelist){ //물품 리스트
-    var list = '<ul>';
-    var i = 0;
-    while(i < filelist.length){
-      list = list + `<li><a href="/product_Info/${filelist[i]}">${i+1}번 물품: ${filelist[i]}</a></li>`;
-      i = i + 1;
+    },
+    p_list: function (filelist) { //물품 리스트
+        var list = '<ul>';
+        var i = 0;
+        while (i < filelist.length) {
+            list = list + `<li><a href="/product_Info/${filelist[i]}">${i + 1}번 물품: ${filelist[i]}</a></li>`;
+            i = i + 1;
+        }
+        list = list + '</ul>';
+        return list;
     }
-    list = list+'</ul>';
-    return list;
-  }
 }
