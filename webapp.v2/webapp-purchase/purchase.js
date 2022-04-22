@@ -2,7 +2,7 @@ require('dotenv').config();
 
 var express = require('express')
 var app = express()
-var port = (process.env.PORT || '8000');
+var port = (process.env.PORT || '8002');
 var fs = require('fs');
 var template = require('./lib/template.js');
 
@@ -77,5 +77,5 @@ app.get('/pays/:pay_id', function (req, res) {
 
 
 app.listen(port, function () {
-    console.log(`Example app listening on port 8000!`);
+    console.log(`Example app listening on port 8002!`);
 });

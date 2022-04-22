@@ -7,7 +7,7 @@ import {PurchaseAPI} from "./purchaseApi.js";
 dotenv.config();
 
 var app = express()
-var port = (process.env.PORT || '3000');
+var port = (process.env.PORT || '8001');
 //app.set('port', port);
 
 //app.get('/', (req, res) => res.send('Hello world'))를 아래와 같이 변환
@@ -78,5 +78,5 @@ app.get('/purchase_list', async (req, res) => {
 });
 
 app.listen(port, function () {
-    console.log(`Example app listening on port 3000!`);
+    console.log(`Example app listening on port 8001!`);
 });

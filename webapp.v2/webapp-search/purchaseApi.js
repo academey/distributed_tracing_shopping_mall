@@ -2,7 +2,7 @@ import {requestApi} from './request.js';
 
 export class PurchaseAPIClass {
     getRequestURL(path) {
-        return `${process.env.URL_purchase}/${path}`;
+        return `${process.env.PURCHASE_PORT}:${process.env.PURCHASE_HOST}/${path}`;
     }
 
     loadListData = async () => {
