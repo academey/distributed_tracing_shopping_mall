@@ -115,9 +115,9 @@ spec:
           - containerPort: 80
           env:
           - name: REACT_APP_SEARCH_HOST
-            value: "purchase"
+            value: "search"
           - name: REACT_APP_SEARCH_PORT
-            value: "8002"
+            value: "8001"
 ---
 apiVersion: v1
 kind: Service
