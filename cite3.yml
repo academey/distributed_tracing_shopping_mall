@@ -1,36 +1,47 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: search
+spec:
+  rules:
+    - host: search.192.168.64.3.sslip.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: search
+                port:
+                  number: 8001
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: search
 spec:
+  replicas: 3
   selector:
     matchLabels:
       app: search
+      tier: app
+      version: v1
   template:
     metadata:
       labels:
         app: search
+        tier: app
+        version: v1
     spec:
       containers:
-        - name: search   
+        - name: search
           image: ghcr.io/academey/distributed_tracing_shopping_mall-search:main
           imagePullPolicy: Always
-          env:
-            - name: PURCHASE_PORT
-              value: "8002"
-            - name: PURCHASE_HOST
-              value: "purchase"
           livenessProbe:
             httpGet:
               path: /
               port: 8001
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 8001
-          ports:
-            - containerPort: 8001
-              protocol: TCP
 
 ---
 apiVersion: v1
@@ -38,15 +49,63 @@ kind: Service
 metadata:
   name: search
 spec:
-  type: NodePort
   ports:
     - port: 8001
-      nodePort: 31001
       protocol: TCP
   selector:
     app: search
-
+    tier: app
+    version: v1
 ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: search
+# spec:
+#   selector:
+#     matchLabels:
+#       app: search
+#   template:
+#     metadata:
+#       labels:
+#         app: search
+#     spec:
+#       containers:
+#         - name: search   
+#           image: ghcr.io/academey/distributed_tracing_shopping_mall-search:main
+#           imagePullPolicy: Always
+#           env:
+#             - name: PURCHASE_PORT
+#               value: "8002"
+#             - name: PURCHASE_HOST
+#               value: "purchase"
+#           livenessProbe:
+#             httpGet:
+#               path: /
+#               port: 8001
+#           readinessProbe:
+#             httpGet:
+#               path: /
+#               port: 8001
+#           ports:
+#             - containerPort: 8001
+#               protocol: TCP
+
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: search
+# spec:
+#   type: NodePort
+#   ports:
+#     - port: 8001
+#       nodePort: 31001
+#       protocol: TCP
+#   selector:
+#     app: search
+
+# ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:

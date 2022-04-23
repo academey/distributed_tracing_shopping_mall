@@ -5,7 +5,8 @@ export class SearchAPIClass {
         console.log("process.env is ", process.env);
         // FIXME env 넘기는 법 모르겠음
         // return `${process.env.REACT_APP_SEARCH_HOST}:${process.env.REACT_APP_SEARCH_PORT}/${path}`;
-        return `search:8001/${path}`;
+        // return `search:8001/${path}`;
+        return `search.192.168.64.3.sslip.io/${path}`
     }
 
     loadSearchListData = async () => {
