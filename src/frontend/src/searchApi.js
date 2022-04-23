@@ -2,6 +2,7 @@ import {requestApi} from './request.js';
 
 export class SearchAPIClass {
     getRequestURL(path) {
+        console.log("process.env is ", process.env);
         return `${process.env.REACT_APP_SEARCH_HOST}:${process.env.REACT_APP_SEARCH_PORT}/${path}`;
     }
 

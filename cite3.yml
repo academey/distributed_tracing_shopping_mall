@@ -90,3 +90,57 @@ spec:
   selector:
     app: purchase
 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
+    spec:
+      serviceAccountName: default
+      containers:
+        - name: server
+          image: ghcr.io/academey/distributed_tracing_shopping_mall-frontend:main
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 80
+          env:
+          - name: REACT_APP_SEARCH_HOST
+            value: "purchase"
+          - name: REACT_APP_SEARCH_PORT
+            value: "8002"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+spec:
+  type: ClusterIP
+  selector:
+    app: frontend
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-external
+spec:
+  type: LoadBalancer
+  selector:
+    app: frontend
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
