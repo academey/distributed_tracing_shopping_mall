@@ -1,4 +1,4 @@
-import {requestApi} from './request.js.js';
+import {requestApi} from './request.js';
 
 export class PurchaseAPIClass {
     getRequestURL(path) {
