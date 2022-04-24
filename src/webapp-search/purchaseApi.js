@@ -14,7 +14,7 @@ export class PurchaseAPIClass {
             requestURL, {
                 method: 'GET'
             });
-
+        console.log('axiosResponse is ', axiosResponse);
         return axiosResponse.data;
     };
 

@@ -33,7 +33,7 @@ export class SearchAPIClass {
         const axiosResponse = await requestApi(requestURL, {
             method: 'GET'
         });
-
+        console.log('axiosResponse is ', axiosResponse);
         return axiosResponse.data;
     };
 }
