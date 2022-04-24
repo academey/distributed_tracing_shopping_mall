@@ -2,7 +2,7 @@ import {requestApi} from './request.js';
 
 export class PurchaseAPIClass {
     getRequestURL(path) {
-        return `${process.env.PURCHASE_HOST}:${process.env.PURCHASE_PORT}/${path}`;
+        return `http://${process.env.PURCHASE_HOST}:${process.env.PURCHASE_PORT}/${path}`;
     }
 
     loadListData = async () => {
@@ -10,12 +10,18 @@ export class PurchaseAPIClass {
             "pays"
         );
         console.log('getRequestURL is ', requestURL);
-        const axiosResponse = await requestApi(
-            requestURL, {
-                method: 'GET'
-            });
 
-        return axiosResponse.data;
+        try {
+            const axiosResponse = await requestApi(
+                requestURL, {
+                    method: 'GET'
+                });
+            console.log('axiosResponse is ', axiosResponse);
+            return axiosResponse.data;
+        } catch (e) {
+            console.log('error is ', e);
+            return e;
+        }
     };
 
     loadData = async ({

@@ -6,7 +6,7 @@ export class SearchAPIClass {
         // FIXME env 넘기는 법 모르겠음
         // return `${process.env.REACT_APP_SEARCH_HOST}:${process.env.REACT_APP_SEARCH_PORT}/${path}`;
         // return `search:8001/${path}`;
-        return `search.192.168.64.3.sslip.io/${path}`
+        return `http://search.192.168.64.3.sslip.io/${path}`
     }
 
     loadSearchListData = async () => {
@@ -33,7 +33,7 @@ export class SearchAPIClass {
         const axiosResponse = await requestApi(requestURL, {
             method: 'GET'
         });
-
+        console.log('axiosResponse is ', axiosResponse);
         return axiosResponse.data;
     };
 }

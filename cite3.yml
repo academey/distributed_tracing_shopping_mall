@@ -21,7 +21,7 @@ kind: Deployment
 metadata:
   name: search
 spec:
-  replicas: 3
+  # replicas: 3
   selector:
     matchLabels:
       app: search
@@ -38,6 +38,11 @@ spec:
         - name: search
           image: ghcr.io/academey/distributed_tracing_shopping_mall-search:main
           imagePullPolicy: Always
+          env:
+          - name: PURCHASE_PORT
+            value: "8002"
+          - name: PURCHASE_HOST
+            value: "purchase"
           livenessProbe:
             httpGet:
               path: /

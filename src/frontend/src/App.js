@@ -9,7 +9,7 @@ function App() {
     const fetchData = async () => {
       try {
         const result = await SearchAPI.loadSearchListData();
-        console.log('result is ', result);
+        console.log('result is 1 ', result);
         setSearchList(result);
       } catch (error) {
         console.log(error);
@@ -23,7 +23,7 @@ function App() {
     const fetchData = async () => {
       try {
         const result = await SearchAPI.loadPurchaseItemList();
-        console.log('result is ', result);
+        console.log('result is 2', result);
         setPurchaseItemList(result);
       } catch (error) {
         console.log(error);

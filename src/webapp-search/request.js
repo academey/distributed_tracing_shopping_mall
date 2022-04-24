@@ -16,6 +16,9 @@ export async function requestApi(
         paramsSerializer: (params) => qs.stringify(params, {arrayFormat: 'repeat'})
     })
         .catch((error) => {
+            console.log("real error is ", error);
+            console.log("real error is ", error.response);
+            console.log("real error is ", error.response.data);
             if (error.response.data) {
                 throw new Error(JSON.stringify(error.response.data));
             } else {
