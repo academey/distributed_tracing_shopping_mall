@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import fs from 'fs';
-import template from './lib/template.js';
+import template from './lib/template.js.js';
 import {PurchaseAPI} from "./purchaseApi.js";
 import cors from "cors";
 
