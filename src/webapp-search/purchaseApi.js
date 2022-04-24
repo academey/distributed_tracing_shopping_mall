@@ -10,12 +10,18 @@ export class PurchaseAPIClass {
             "pays"
         );
         console.log('getRequestURL is ', requestURL);
-        const axiosResponse = await requestApi(
-            requestURL, {
-                method: 'GET'
-            });
-        console.log('axiosResponse is ', axiosResponse);
-        return axiosResponse.data;
+
+        try {
+            const axiosResponse = await requestApi(
+                requestURL, {
+                    method: 'GET'
+                });
+            console.log('axiosResponse is ', axiosResponse);
+            return axiosResponse.data;
+        } catch (e) {
+            console.log('error is ', e);
+            return e;
+        }
     };
 
     loadData = async ({
