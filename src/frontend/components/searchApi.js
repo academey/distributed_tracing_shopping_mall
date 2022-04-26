@@ -9,10 +9,10 @@ export class SearchAPIClass {
         // https://tacomanator.medium.com/environments-with-create-react-app-7b645312c09d
         // return `${process.env.REACT_APP_SEARCH_HOST}:${process.env.REACT_APP_SEARCH_PORT}/${path}`;
         // return `search:8001/${path}`;
-        if (process.env.NODE_ENV == "development") {
+        if (process.env.NODE_ENV === "development") {
             return `http://localhost:8001/${path}`
         } else {
-            return `http://search.192.168.64.3.sslip.io/${path}`
+            return `http://search:8001/${path}`
         }
     }
 
