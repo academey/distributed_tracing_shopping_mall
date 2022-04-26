@@ -16,7 +16,7 @@ export async function requestApi(
         paramsSerializer: (params) => qs.stringify(params, {arrayFormat: 'repeat'})
     })
         .catch((error) => {
-            if (error.response.data) {
+            if (error.response != null && error.response.data) {
                 throw new Error(JSON.stringify(error.response.data));
             } else {
                 throw new Error(JSON.stringify(error));

@@ -1,21 +1,49 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import {SearchAPI} from "../components/searchApi";
+import {SearchAPI} from "../src/components/searchApi";
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import ProTip from '../src/ProTip';
+import Link from '../src/Link';
+import Copyright from '../src/Copyright';
 
 export const getServerSideProps = async () => {
-    const purchaseItemList = await SearchAPI.loadPurchaseItemList();
-    const searchListData = await SearchAPI.loadSearchListData();
-    return {
-        props: {
-            purchaseItemList,
-            searchListData
-        },
+    try {
+        const purchaseItemList = await SearchAPI.loadPurchaseItemList();
+        const searchListData = await SearchAPI.loadSearchListData();
+        return {
+            props: {
+                purchaseItemList,
+                searchListData
+            },
+        }
+    } catch (e) {
+        return {
+            props: {
+                purchaseItemList: [],
+                searchListData: []
+            },
+        }
     }
+
 }
 
 export default function Home({searchListData, purchaseItemList}) {
     return (
         <div className={styles.container}>
+            <Container maxWidth="sm">
+                <Box sx={{ my: 4 }}>
+                    <Typography variant="h4" component="h1" gutterBottom>
+                        Next.js example
+                    </Typography>
+                    <Link href="/about" color="secondary">
+                        Go to the about page
+                    </Link>
+                    <ProTip />
+                    <Copyright />
+                </Box>
+            </Container>
             <Head>
                 <title>Create Next App</title>
                 <link rel="icon" href="/favicon.ico"/>

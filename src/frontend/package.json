@@ -5,6 +5,13 @@
     "build": "next build"
   },
   "dependencies": {
+    "@emotion/cache": "latest",
+    "@emotion/react": "latest",
+    "@emotion/server": "latest",
+    "@emotion/styled": "latest",
+    "@mui/icons-material": "latest",
+    "@mui/material": "latest",
+    "prop-types": "latest",
     "axios": "^0.26.1",
     "dotenv": "^16.0.0",
     "next": "latest",
