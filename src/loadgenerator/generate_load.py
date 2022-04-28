@@ -3,7 +3,7 @@ import os
 from time import sleep
 
 SEARCH_API = f'{os.getenv("SEARCH_HOST", "localhost")}:{os.getenv("SEARCH_PORT", "8001")}'
-SLEEP_TIMEOUT = os.getenv("SLEEP_TIMEOUT", 0.1)
+SLEEP_TIMEOUT = int(os.getenv("SLEEP_TIMEOUT", "0.1"))
 
 def make_request(endpoint):
     print("--------------------------------------------------------")
