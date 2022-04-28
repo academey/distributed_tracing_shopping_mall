@@ -178,9 +178,9 @@ spec:
           ports:
           - containerPort: 3000
           env:
-          - name: REACT_APP_SEARCH_HOST
+          - name: SEARCH_HOST
             value: "search"
-          - name: REACT_APP_SEARCH_PORT
+          - name: SEARCH_PORT
             value: "8001"
 ---
 apiVersion: v1

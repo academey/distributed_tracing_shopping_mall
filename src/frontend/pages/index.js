@@ -1,12 +1,12 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import {SearchAPI} from "../src/components/searchApi";
+import {SearchAPI} from "../src/api/searchApi";
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import ProTip from '../src/ProTip';
-import Link from '../src/Link';
-import Copyright from '../src/Copyright';
+import ProTip from '../src/components/ProTip';
+import Link from '../src/components/Link';
+import Copyright from '../src/components/Copyright';
 
 export const getServerSideProps = async () => {
     try {
