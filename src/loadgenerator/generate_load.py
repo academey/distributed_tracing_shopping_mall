@@ -3,6 +3,7 @@ import os
 from time import sleep
 
 SEARCH_API = f'{os.getenv("SEARCH_HOST", "localhost")}:{os.getenv("SEARCH_PORT", "8001")}'
+SLEEP_TIMEOUT = os.getenv("SLEEP_TIMEOUT", 0.1)
 
 def make_request(endpoint):
     print("--------------------------------------------------------")
@@ -10,7 +11,7 @@ def make_request(endpoint):
     curl_result = f'curl {endpoint}'
     response = os.popen(curl_result).read()
     print(response)
-    sleep(0.1)
+    sleep(SLEEP_TIMEOUT)
 
 while 1:
     make_request(SEARCH_API + "/search")
