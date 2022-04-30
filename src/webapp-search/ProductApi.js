@@ -1,17 +1,9 @@
-import dotenv from 'dotenv';
 import {requestApi} from './request.js';
 
 
-dotenv.config();
-
 export class ProductAPIClass {
     getRequestURL(path) {
-        if (process.env.NODE_ENV == 'development') {
-            console.log("development 접근");
-            return `${process.env.URL_process}/${path}`
-        } else {
-            return `http://search.192.168.64.3.sslip.io/${path}`
-        }
+        return `http://${process.env.PRODUCT_HOST}:${process.env.PRODUCT_PORT}/${path}`;
     }
 
     loadListData = async () => { //product list 전체 호출
@@ -19,6 +11,7 @@ export class ProductAPIClass {
             "product"
         );
         console.log('getRequestURL is ', requestURL);
+        console.log(process.env);
         console.log(process.env.NODE_ENV);
         console.log(process.env.URL_search);
 

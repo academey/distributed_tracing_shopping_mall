@@ -13,20 +13,13 @@
 
 # misc
 .DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
 
-<<<<<<< HEAD
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-=======
 # vercel
 .vercel
 
 # lock files
 # yarn.lock
 package-lock.json
->>>>>>> cf03c393b2e89266ef4d16180b7eaaac64e0bce9
