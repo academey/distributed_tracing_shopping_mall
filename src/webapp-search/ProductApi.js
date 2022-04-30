@@ -1,15 +1,26 @@
+import dotenv from 'dotenv';
 import {requestApi} from './request.js';
 
-export class PurchaseAPIClass {
+
+dotenv.config();
+
+export class ProductAPIClass {
     getRequestURL(path) {
-        return `http://${process.env.PURCHASE_HOST}:${process.env.PURCHASE_PORT}/${path}`;
+        if (process.env.NODE_ENV == 'development') {
+            console.log("development 접근");
+            return `${process.env.URL_process}/${path}`
+        } else {
+            return `http://search.192.168.64.3.sslip.io/${path}`
+        }
     }
 
-    loadListData = async () => {
+    loadListData = async () => { //product list 전체 호출
         let requestURL = this.getRequestURL(
-            "pays"
+            "product"
         );
         console.log('getRequestURL is ', requestURL);
+        console.log(process.env.NODE_ENV);
+        console.log(process.env.URL_search);
 
         try {
             const axiosResponse = await requestApi(
@@ -24,12 +35,12 @@ export class PurchaseAPIClass {
         }
     };
 
-    loadData = async ({
-                          payId
+    loadData = async ({  //id를 통해 정보 얻어오기(특정 product의 세부정보)
+                          product_id
                       }) => {
         const axiosResponse = await requestApi(
             this.getRequestURL(
-                `pays/${payId}`
+                `product/${product_id}`
             ), {
                 method: 'GET'
             });
@@ -38,4 +49,4 @@ export class PurchaseAPIClass {
     };
 }
 
-export const PurchaseAPI = new PurchaseAPIClass();
+export const ProductAPI = new ProductAPIClass();

@@ -3,6 +3,7 @@ import express from 'express';
 import fs from 'fs';
 import template from './lib/template.js';
 import {PurchaseAPI} from "./purchaseApi.js";
+import {ProductAPI} from "./productApi.js";
 import cors from "cors";
 
 dotenv.config();
@@ -14,40 +15,26 @@ app.options('*', cors());
 var port = (process.env.PORT || '8001');
 
 
-// Frontend -> Search -> Purchase
-// Search -> "떡볶이"라고 입력을 받으면
-// Product -> "떡볶이"라는 아이템 있는지 찾아봄. 그리고 상세정보를 주고
-// Purchase -> 떡볶이 아이템이 수량이 몇개인지 혹은 가격이 얼마인지.
+// 물품 검색과 관련된 api, db가 있어야 의미가 있을거 같기는 하다.
 
-
-// Frontend -> "떡볶이" 입력했을 때 search 에다가만 요청함.
-// Search -> Product / Purchase 를 따로 요청함.
-// Search -> 둘의 결괏값을 받아서 이쁘게 포장해서 내려줌.
-
-app.get('/purchase_list', async (req, res) => {
+app.get('/search', async (req, res) => {
     try {
-        let payList = await PurchaseAPI.loadListData();
+        console.log(process.env.PORT);
+        let productList = await ProductAPI.loadListData();
 
-        res.json(payList.map(pay => {
-            return `Pay 의 Title 은 ${pay.title} 입니다 `
+        res.json(productList.map(product => {
+            return `Pay 의 Title 은 ${product.title} 입니다 `
         }));
     } catch (e) {
         res.json({"error": e.toString()});
     }
 });
  
-app.get('/search', function (req, res) {
-    const search_items = [{
-        id: 1,
-        title: 'search item test1'
-    },
-        {
-            id: 2,
-            title: 'search item test2'
-        }
-    ];
-    res.json(search_items);
+app.get('/search_test', function(req,res){
+    console.log('sdfasf');
+    res.json({say:"hello"});
 });
+
 
 app.get('/search/:search_id', function (req, res) {
     const search = {
