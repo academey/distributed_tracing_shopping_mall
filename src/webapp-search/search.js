@@ -31,6 +31,7 @@ app.get('/search', async (req, res) => {
 });
  
 app.get('/search_test', function(req,res){
+    console.log(process.env.PORT);
     console.log('sdfasf');
     res.json({say:"hello"});
 });

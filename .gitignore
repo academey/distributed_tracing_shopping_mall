@@ -79,7 +79,7 @@ web_modules/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variable files
+# dotenv environment variable files(일단 주석처리)
 .env
 .env.development.local
 .env.test.local
