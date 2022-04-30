@@ -43,10 +43,10 @@ spec:
             value: "8002"
           - name: PURCHASE_HOST
             value: "purchase"
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 8001
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: 8001
 
 ---
 apiVersion: v1
@@ -128,14 +128,14 @@ spec:
         - name: purchase
           image: ghcr.io/academey/distributed_tracing_shopping_mall-purchase:main
           imagePullPolicy: Always
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 8002
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 8002
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: 8002
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: 8002
           ports:
             - containerPort: 8002
               protocol: TCP
@@ -176,11 +176,11 @@ spec:
           image: ghcr.io/academey/distributed_tracing_shopping_mall-frontend:main
           imagePullPolicy: Always
           ports:
-          - containerPort: 80
+          - containerPort: 3000
           env:
-          - name: REACT_APP_SEARCH_HOST
+          - name: SEARCH_HOST
             value: "search"
-          - name: REACT_APP_SEARCH_PORT
+          - name: SEARCH_PORT
             value: "8001"
 ---
 apiVersion: v1
@@ -193,8 +193,8 @@ spec:
     app: frontend
   ports:
   - name: http
-    port: 80
-    targetPort: 80
+    port: 3000
+    targetPort: 3000
 ---
 apiVersion: v1
 kind: Service
@@ -206,5 +206,35 @@ spec:
     app: frontend
   ports:
   - name: http
-    port: 80
-    targetPort: 80
+    port: 3000
+    targetPort: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loadgenerator
+spec:
+  # replicas: 3
+  selector:
+    matchLabels:
+      app: loadgenerator
+      tier: app
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: loadgenerator
+        tier: app
+        version: v1
+    spec:
+      containers:
+        - name: loadgenerator
+          image: ghcr.io/academey/distributed_tracing_shopping_mall-loadgenerator:main
+          imagePullPolicy: Always
+          env:
+          - name: SEARCH_PORT
+            value: "8001"
+          - name: SEARCH_HOST
+            value: "search"
+          - name: SLEEP_TIMEOUT
+            value: '0.5'
