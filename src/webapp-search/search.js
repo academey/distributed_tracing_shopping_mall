@@ -18,9 +18,6 @@ var port = (process.env.PORT || '8001');
 // 물품 검색과 관련된 api, db가 있어야 의미가 있을거 같기는 하다.
 
 app.get('/search', async (req, res) => {
-    if(Math.random() < 0.5){
-        return res.status(500).json({text: '에러를 발생시키는 팟입니다'});
-    }
     try {
         console.log(process.env.PORT);
         let productList = await ProductAPI.loadListData();
