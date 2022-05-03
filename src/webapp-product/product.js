@@ -42,6 +42,7 @@ app.get('/product', function (req, res) {//기본 path는 모든 product 정보 
 });
 
 app.get('/product/:product_id', function (req, res) {
+
     var id = req.params.product_id;
     const product = {
         id,

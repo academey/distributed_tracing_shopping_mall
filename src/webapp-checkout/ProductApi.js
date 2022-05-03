@@ -7,7 +7,7 @@ dotenv.config();
 
 export class ProductAPIClass {
     getRequestURL(path) {
-        return `http://localhost:8007/${path}`; //이부분 .env undefined문제 때문에 string으로 바꾼것 후에 다시 수정해야함. env문제 해결됨 이제 바꾸면 됨.
+        return `http://localhost:8007/${path}`; //이부분 .env undefined문제 때문에 string으로 바꾼것 후에 다시 수정해야함.
     }
 
     loadListData = async () => { //product list 전체 호출
@@ -15,11 +15,11 @@ export class ProductAPIClass {
             "product"
         );
         console.log('getRequestURL is ', requestURL);
-
-        //console.log(process.env); //env자체가 import되었나 확인
-        //console.log(process.env.NODE_ENV); //우리가 설정한 env가 적용되나 확인
-        //console.log(process.env.URL_search);
-        
+        /* env 환경변수 제대로 되나 확인용
+        console.log(process.env); env자체가 import되었나 확인
+        console.log(process.env.NODE_ENV); 우리가 설정한 env가 적용되나 확인
+        console.log(process.env.URL_search);
+            */
         try {
             const axiosResponse = await requestApi(
                 requestURL, {
