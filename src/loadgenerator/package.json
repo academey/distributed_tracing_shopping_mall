@@ -1,0 +1,14 @@
+{
+  "name": "loadgenerator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "generate_load.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "await-exec": "^0.1.2"
+  }
+}
