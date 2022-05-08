@@ -11,6 +11,10 @@ spec:
       version: v1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8001"
+        prometheus.io/path: "/metrics"
       labels:
         app: search
         tier: app
@@ -186,7 +190,6 @@ kind: Deployment
 metadata:
   name: loadgenerator
 spec:
-  # replicas: 3
   selector:
     matchLabels:
       app: loadgenerator
@@ -204,9 +207,5 @@ spec:
           image: ghcr.io/academey/distributed_tracing_shopping_mall-loadgenerator:main
           imagePullPolicy: Always
           env:
-          - name: SEARCH_PORT
-            value: "8001"
-          - name: SEARCH_HOST
-            value: "search"
-          - name: SLEEP_TIMEOUT
-            value: '0.5'
+          - name: API_ENDPOINT
+            value: "http://search:8001/metrics-test"
