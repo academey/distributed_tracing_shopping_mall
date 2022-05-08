@@ -41,13 +41,17 @@ app.get('/metrics', async (request, response) => {
 });
 
 app.get('/metrics-test', (request, response) => {
+    if(Math.random() < 0.5){ 
+        return res.status(500).json({text: '에러를 발생시키는 팟입니다'}); 
+    } 
+    
     counter.inc(); // Increment by 1
-  
+
     const end = histogram.startTimer();
-  const name = request.query.name ? request.query.name : 'World';
-  response.send({content: `Hello, ${name}!`});
-  // stop the timer
-  end({ method: request.method, 'status_code': 200 });
+    const name = request.query.name ? request.query.name : 'World';
+    response.send({content: `Hello, ${name}!`});
+    // stop the timer
+    end({ method: request.method, 'status_code': 200 });
 }) 
 
 // 물품 검색과 관련된 api, db가 있어야 의미가 있을거 같기는 하다.
