@@ -4,14 +4,51 @@ import template from './lib/template.js';
 import {PurchaseAPI} from "./purchaseApi.js";
 import {ProductAPI} from "./productApi.js";
 import cors from "cors";
+import client from 'prom-client';
+import bodyParser from 'body-parser';
 
 
 var app = express()
 app.use(cors());
 app.options('*', cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 
 var port = (process.env.PORT || '8001');
 
+// define a custom prefix string for application metrics
+client.collectDefaultMetrics({ prefix: 'my_application:' });
+const counter = new client.Counter({
+    name: 'metric_name',
+    help: 'metric_help',
+  });
+  
+// a custom histogram metric which represents the latency
+// of each call to our API /api/greeting.
+const histogram = new client.Histogram({
+  name: 'my_application:hello_duration',
+  help: 'Duration of HTTP requests in ms',
+  labelNames: ['method', 'status_code'],
+  buckets: [0.1, 5, 15, 50, 100, 500]
+});
+
+  
+app.get('/metrics', async (request, response) => {
+    response.set('Content-Type', client.register.contentType);
+    let metrics = await client.register.metrics();
+
+    response.send(metrics);
+});
+
+app.get('/metrics-test', (request, response) => {
+    counter.inc(); // Increment by 1
+  
+    const end = histogram.startTimer();
+  const name = request.query.name ? request.query.name : 'World';
+  response.send({content: `Hello, ${name}!`});
+  // stop the timer
+  end({ method: request.method, 'status_code': 200 });
+}) 
 
 // 물품 검색과 관련된 api, db가 있어야 의미가 있을거 같기는 하다.
 
