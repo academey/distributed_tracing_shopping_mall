@@ -5,9 +5,9 @@ export class PurchaseAPIClass {
         return `http://${process.env.PURCHASE_HOST}:${process.env.PURCHASE_PORT}/${path}`;
     }
 
-    loadListData = async () => {
+    loadCardList = async () => {
         let requestURL = this.getRequestURL(
-            "pays"
+            "purchase"
         );
         console.log('getRequestURL is ', requestURL);
 
@@ -24,12 +24,12 @@ export class PurchaseAPIClass {
         }
     };
 
-    loadData = async ({
-                          payId
+    loadCard = async ({
+                          cardId
                       }) => {
         const axiosResponse = await requestApi(
             this.getRequestURL(
-                `pays/${payId}`
+                `purchase/${cardId}`
             ), {
                 method: 'GET'
             });
