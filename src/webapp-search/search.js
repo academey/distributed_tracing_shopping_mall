@@ -42,14 +42,9 @@ app.get('/metrics', async (request, response) => {
 
 app.get('/metrics-test', (request, response) => {
     counter.inc(); // Increment by 1
-
+  
     const end = histogram.startTimer();
     const name = request.query.name ? request.query.name : 'World';
-    if(Math.random() < 0.5){ 
-        end({ method: request.method, 'status_code': 500 });
-        return res.status(500).json({text: '에러를 발생시키는 팟입니다'}); 
-    } 
-    
     response.send({content: `Hello, ${name}!`});
     // stop the timer
     end({ method: request.method, 'status_code': 200 });
