@@ -13,17 +13,17 @@ app.get('/purchase', function (req, res) { //기본 purchase입력시 전체 데
     const purchase_info = [{
         id: 1,
         title: `신한카드`,
-        number: `${id*142857%10000000}`,
-        date:`2028-${id%12}-${id%30}`
+        number: `${1*142857%10000000}`,
+        date:`2028-${1%12}-${1%30}`
     },
         {
             id: 2,
             title: `농협카드`,
-            number: `${id*142857%10000000}`,
-            date:`2028-${id%12}-${id%30}`
+            number: `${2*142857%10000000}`,
+            date:`2028-${2%12}-${2%30}`
         }
     ];
-    res.json(pays);
+    res.json(purchase_info);
 });
 
 app.get('/purchase/:purchase_id', function (req, res) {
@@ -33,7 +33,7 @@ app.get('/purchase/:purchase_id', function (req, res) {
         number: `${id*142857%10000000}`,
         date:`2028-${id%12}-${id%30}`
     };
-    res.json(pay);
+    res.json(purchase_info);
 });
 
 

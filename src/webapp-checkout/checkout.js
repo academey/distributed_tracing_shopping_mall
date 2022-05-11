@@ -4,6 +4,10 @@ import fs from 'fs';
 import template from './lib/template.js';
 import {PurchaseAPI} from "./purchaseApi.js";
 import cors from "cors";
+import { CartAPI } from './CartApi.js';
+import { CurrencyAPI } from './CurrencyApi.js';
+import { EmailAPI } from './EmailApi.js';
+import { ShippingAPI } from './ShippingApi.js';
 
 dotenv.config();
 
@@ -11,29 +15,66 @@ var app = express()
 app.use(cors());
 app.options('*', cors());
 
-var port = (process.env.PORT || '8001');
+var port = (process.env.CHEKCOUT_PORT || '8009');
 
 
-// Frontend -> Search -> Purchase
-// Search -> "떡볶이"라고 입력을 받으면
-// Product -> "떡볶이"라는 아이템 있는지 찾아봄. 그리고 상세정보를 주고
-// Purchase -> 떡볶이 아이템이 수량이 몇개인지 혹은 가격이 얼마인지.
+// checkout app: 물건 구매의 메인이 되는곳. 
 
 
-// Frontend -> "떡볶이" 입력했을 때 search 에다가만 요청함.
-// Search -> Product / Purchase 를 따로 요청함.
-// Search -> 둘의 결괏값을 받아서 이쁘게 포장해서 내려줌.
+app.get('/checkout', async (req, res) => {  //결제를 진행하는 앱(카트에 담겨있는 물품 일괄 결제)
+    var success = true; //실패시 false로 전환(에러뜨면)
+    let card_data;
+    let cart_list;
+    let currency;
+    let shipping_info;
 
-app.get('/purchase_list', async (req, res) => {
-    try {
-        let payList = await PurchaseAPI.loadListData();
+    try{
+        //await 병렬처리(_P가 붙은것들)
+        const card_P = PurchaseAPI.loadCardList();
+        const cart_list_P = CartAPI.loadCartList();
+        const currency_P = CurrencyAPI.loadCurrencyList()[0];
+        
+        await ShippingAPI.addShippingAll();
+        const shipping_info_P = ShippingAPI.loadshippingInfo();
 
-        res.json(payList.map(pay => {
-            return `Pay 의 Title 은 ${pay.title} 입니다 `
-        }));
-    } catch (e) {
-        res.json({"error": e.toString()});
+        card_data = await card_P;
+        cart_list =  await cart_list_P;
+        currency = await currency_P;
+        shipping_info = await shipping_info_P;
+
+    }catch (e){
+        success = false;    //실패
+        console.log("에러발생함!!");
+        console.log(e);
+        res.json(e);
     }
+
+
+    var today = new Date();
+    var card = card_data[0];
+
+    const result = {    //리턴할 결과
+        title: "결제 결과",
+        success,    //성공여부
+        cost: shipping_info.sum_price,  //결제금액
+        number: shipping_info.number,   //결제한 물건 수
+        used_card: card.title,   //사용한 카드의 이름
+        date: today,
+        explain: `${card.title}카드를 이용하여 ${shipping_info.sum_price}만큼 지불하여 결제를 진행하였다.(일시: ${today})`
+
+    };
+
+    //이후에는 이메일보내기 등, 결제와 함께 진행되는 다른 작업들 수행
+    
+
+
+    //카트와 구매내역 삭제
+    CartAPI.removeCartAll();
+    ShippingAPI.removeShippingAll();
+
+    res.json(result);
+
+
 });
  
 app.get('/search', function (req, res) {
@@ -59,5 +100,5 @@ app.get('/search/:search_id', function (req, res) {
 
 
 app.listen(port, function () {
-    console.log(`Example app listening on port 8001!`);
+    console.log(`Example app listening on port 8009!`);
 });

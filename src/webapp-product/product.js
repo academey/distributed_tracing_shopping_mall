@@ -11,7 +11,7 @@ var app = express()
 app.use(cors());
 app.options('*', cors());
 
-var port = (process.env.PORT || '8007');
+var port = (process.env.PRODUCT_PORT || '8007');
 
 
 // 물건의 세부 정보들을 반환해주기 위한 app

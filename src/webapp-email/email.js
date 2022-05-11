@@ -54,7 +54,7 @@ app.post('/email/', function(req, res){
         text: req.body.text,
         date: today
 
-    }
+    };
 })
 
 
