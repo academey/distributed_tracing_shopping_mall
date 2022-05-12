@@ -1,9 +1,4 @@
-import dotenv from 'dotenv';
 import {requestApi} from './request.js';
-
-
-dotenv.config();
-
 
 export class ProductAPIClass {
     getRequestURL(path) {

@@ -1,12 +1,13 @@
 import express from 'express';
 import fs from 'fs';
 import template from './lib/template.js';
-import {PurchaseAPI} from "./purchaseApi.js";
 import {ProductAPI} from "./productApi.js";
 import cors from "cors";
 import client from 'prom-client';
 import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
 
+dotenv.config();
 
 var app = express()
 app.use(cors());

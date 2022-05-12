@@ -123,15 +123,15 @@ const Layout: React.FC<Props> = ({
         <CheckoutProvider>
           <SidebarUI links={navBarlinks} />
         </CheckoutProvider>
-        <FeatureBar
-          title="This site uses cookies to improve your experience. By clicking, you agree to our Privacy Policy."
-          hide={acceptedCookies}
-          action={
-            <Button className="mx-5" onClick={() => onAcceptCookies()}>
-              Accept cookies
-            </Button>
-          }
-        />
+        {/*<FeatureBar*/}
+        {/*  title="This site uses cookies to improve your experience. By clicking, you agree to our Privacy Policy."*/}
+        {/*  hide={acceptedCookies}*/}
+        {/*  action={*/}
+        {/*    <Button className="mx-5" onClick={() => onAcceptCookies()}>*/}
+        {/*      Accept cookies*/}
+        {/*    </Button>*/}
+        {/*  }*/}
+        {/*/>*/}
       </div>
     </CommerceProvider>
   )

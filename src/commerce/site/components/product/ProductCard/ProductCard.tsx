@@ -47,15 +47,17 @@ const ProductCard: FC<Props> = ({
             </div>
             {product?.images && (
               <div>
-                <Image
-                  quality="85"
-                  src={product.images[0]?.url || placeholderImg}
-                  alt={product.name || 'Product Image'}
-                  height={320}
-                  width={320}
-                  layout="fixed"
-                  {...imgProps}
-                />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={product.images[0]?.url || placeholderImg} alt={product.name || 'Product Image'} {...imgProps} />
+                {/*<Image*/}
+                {/*  quality="85"*/}
+                {/*  src={product.images[0]?.url || placeholderImg}*/}
+                {/*  alt={product.name || 'Product Image'}*/}
+                {/*  height={320}*/}
+                {/*  width={320}*/}
+                {/*  layout="fixed"*/}
+                {/*  {...imgProps}*/}
+                {/*/>*/}
               </div>
             )}
           </>

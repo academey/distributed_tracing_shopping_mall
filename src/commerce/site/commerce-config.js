@@ -103,4 +103,11 @@ function withCommerceConfig(nextConfig = {}) {
   return core.withCommerceConfig(config)
 }
 
-module.exports = { withCommerceConfig, getProviderName }
+
+module.exports = { withCommerceConfig, getProviderName, images: {
+    domains: [
+      'dnmart.co.kr',
+      'dimg.donga.com'
+    ],
+  },
+}

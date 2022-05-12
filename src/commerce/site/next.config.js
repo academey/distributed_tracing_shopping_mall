@@ -9,6 +9,9 @@ const isSwell = provider === '@vercel/commerce-swell'
 const isVendure = provider === '@vercel/commerce-vendure'
 
 module.exports = withCommerceConfig({
+  images: {
+    domains: ['dnmart.co.kr', 'dimg.donga.com'],
+  },
   commerce,
   i18n: {
     locales: ['en-US', 'es'],
