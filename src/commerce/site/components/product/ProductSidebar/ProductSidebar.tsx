@@ -56,12 +56,13 @@ const ProductSidebar: FC<ProductSidebarProps> = ({ product, className }) => {
         <div className="text-accent-6 pr-1 font-medium text-sm">36 reviews</div>
       </div>
       <div>
-        {process.env.COMMERCE_CART_ENABLED && (
           <Button
             aria-label="Add to Cart"
             type="button"
             className={s.button}
-            onClick={addToCart}
+            onClick={() => {
+              addToCart()
+            }}
             loading={loading}
             disabled={variant?.availableForSale === false}
           >
@@ -69,7 +70,6 @@ const ProductSidebar: FC<ProductSidebarProps> = ({ product, className }) => {
               ? 'Not Available'
               : 'Add To Cart'}
           </Button>
-        )}
       </div>
       <div className="mt-6">
         <Collapse title="Care">

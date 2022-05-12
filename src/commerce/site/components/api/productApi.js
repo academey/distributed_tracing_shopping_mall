@@ -15,8 +15,8 @@ export class ProductAPIClass {
         return axiosResponse.data;
     };
 
-    loadProductData = async ({searchId}) => {
-        const axiosResponse = await requestApi(this.getRequestURL(`search/${searchId}`), {
+    loadProductData = async ({productId}) => {
+        const axiosResponse = await requestApi(this.getRequestURL(`product/${productId}`), {
             method: 'GET'
         });
 

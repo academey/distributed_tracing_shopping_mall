@@ -60,9 +60,9 @@ export async function getServerSideProps({
     return {
       id: myProduct.id,
       name: myProduct.title,
-      vendor: 'Next.js',
-      path: '/shirt',
-      slug: 'shirt',
+      vendor: myProduct.brand,
+      path: `/${myProduct.id}`,
+      slug: myProduct.id,
       price: {
         value: myProduct.price,
         currencyCode: 'USD'
