@@ -15,5 +15,5 @@ RUN npm install
 # 앱 소스 추가
 COPY . .
 
-EXPOSE 8010
+EXPOSE 8007
 CMD [ "node", "product.js" ]

@@ -263,7 +263,7 @@ spec:
 #           - name: PRODUCT_HOST
 #             value: "product"
 #           - name: PRODUCT_PORT
-#             value: "8010"
+#             value: "8007"
 
 # ---
 # apiVersion: v1
@@ -419,7 +419,7 @@ spec:
           image: ghcr.io/academey/distributed_tracing_shopping_mall-product:main
           imagePullPolicy: Always
           ports:
-            - containerPort: 8010
+            - containerPort: 8007
               protocol: TCP
 
 ---
@@ -430,7 +430,7 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 8010
+    - port: 8007
       nodePort: 31007
       protocol: TCP
   selector:
@@ -464,7 +464,7 @@ spec:
 #           - name: PRODUCT_HOST
 #             value: "PRODUCT"
 #           - name: PRODUCT_PORT
-#             value: "8010"
+#             value: "8007"
 
 # ---
 # apiVersion: v1
