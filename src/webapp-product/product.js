@@ -8,7 +8,7 @@ var app = express()
 app.use(cors());
 app.options('*', cors());
 
-var port = (process.env.PRODUCT_PORT || '8007');
+var port = (process.env.PRODUCT_PORT || '8010');
 
 
 // 물건의 세부 정보들을 반환해주기 위한 app
@@ -54,5 +54,5 @@ app.get('/product/:product_id', function (req, res) {
 
 
 app.listen(port, function () {
-    console.log(`Example app listening on port 8007!`);
+    console.log(`Example app listening on port 8010!`);
 });
