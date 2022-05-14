@@ -15,5 +15,5 @@ RUN npm install
 # 앱 소스 추가
 COPY . .
 
-EXPOSE 8001
-CMD [ "node", "search.js" ]
+EXPOSE 8004
+CMD [ "node", "email.js" ]

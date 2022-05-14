@@ -7,7 +7,7 @@ dotenv.config();
 
 export class ProductAPIClass {
     getRequestURL(path) {
-        return `http://localhost:8007/${path}`; //이부분 .env undefined문제 때문에 string으로 바꾼것 후에 다시 수정해야함.
+        return `http://${process.env.PRODUCT_HOST}:${process.env.PRODUCT_PORT}/${path}`;
     }
 
     loadListData = async () => { //product list 전체 호출

@@ -1,6 +1,4 @@
 import express from 'express';
-import fs from 'fs';
-import template from './lib/template.js';
 import {ProductAPI} from "./productApi.js";
 import cors from "cors";
 import client from 'prom-client';
