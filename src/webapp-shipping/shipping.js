@@ -68,7 +68,7 @@ app.get('/shipping_info', async(req, res)=> {
 
         }
         const result = {
-            number : i,
+            number : i, //주문한 물품 숫자.
             sum_price,
             explain: "주문내역에 담긴 물품들에 대한 총괄 정보"
         }
@@ -92,7 +92,7 @@ app.get('/shipping_add', async (req, res) => {// 그냥 add를 하면 카트리�
         shippingList.push({ //어레이에 객체 추가
         id: i.id,
         title: `${i.id}번째 물품 주문`,
-        price: i.price*(1-i.discount),
+        price: Number(Number(i.price)*(1-i.discount)).toFixed(3),
         info: `${i.id}번째 물품의 주문내역입니다. 여기서의 price는 할인률이 적용되어있습니다.`,
         explain: `cart app으로부터 가져온 정보`
         });

@@ -3,8 +3,13 @@ import express from 'express';
 import fs from 'fs';
 import template from './lib/template.js';
 import {PurchaseAPI} from "./purchaseApi.js";
-import {ProductAPI} from "./productApi.js"
+import {ProductAPI} from "./ProductApi.js"
+import {ShippingAPI} from "./ShippingApi.js"
 import cors from "cors";
+import path from 'path';
+
+const __dirname = path.resolve();
+const datafile = __dirname+ `/webapp-info/data/info.json`;
 
 dotenv.config();
 
@@ -15,23 +20,30 @@ app.options('*', cors());
 var port = (process.env.PORT || '8010');
 
 
-// 장바구니와 관련된 app으로 product를 호출하여 사용한다, checkout, frontend에서 호출하며, 
+// 쇼핑몰 앱 전체의 데이터(매출 등)을 관리하는 앱.
 
 
 
-app.get('/cart', function (req, res) { //현재 cart_list 반환, 비어있는 경우 "empty" 반환
-    let cart_list = (fs.readFileSync('src\webapp-cart\data\cart-list.json', 'utf-8'));
-    if(cart_list != "" && cart_list != undefined){ //빈파일("")이 아닐때만, 빈파일이면 JSON으로 변환이 안됨.
-        cart_list = JSON.parse(cart_list);
-        console.log("저장된 cart-list:(아래)");
-        console.log(cart_list);
-        res.json(cart_list);
+app.get('/info', function (req, res) { //현재 데이터 반환
+    console.log(__dirname);
+    let info = (fs.readFileSync(datafile, 'utf-8'));
+    if(info != "" && info != undefined){ //빈파일("")이 아닐때만, 빈파일이면 JSON으로 변환이 안됨.
+        info = JSON.parse(info);
+        console.log("저장된 info:(아래)");
+        console.log(info);
+        res.json(info);
     }
     else{   //빈 배열일때
-        console.log("cart-list가 비어있음");
-        res.json([]);
+        console.log("info가 비어있음");
+        res.json({
+            checkout_num: 0,
+            p_number:  0,
+            first_time: "not-yet, there was no checkout",   //가장 처음 결제한 시간은 now이다.(처음 기록이므로)
+            last_time: "not-yet, there was no checkout",
+            sum_price: 0,
+            avg_sales: "not-yet, there was no checkout"    //아직 측정 불가능);
+         });
     }
-
 });
 
 /* 테스트용
@@ -44,35 +56,58 @@ app.get('/cart_test', function(req, res){
 })*/
 
 
-app.get('/cart_add/:cart_id', async (req, res) => {  //cart에 물품 추가
-    let id = req.params.cart_id;
-    const add_product = await ProductAPI.loadData(id);  //product중 cart_id와 같은 id를 가진 product값을 받아옴(cart_list에 추가해 줄 데이터)
-    console.log(`cartlist에 저장할 데이터: ${add_product}`);
-    //const add = JSON.stringify(add_product);
+app.get('/info_update', async (req, res) => {  //info 추가
+    const shipping_info = await ShippingAPI.loadshippingInfo();
 
-    let cart_list = Array();
-    let pre_list = fs.readFileSync('src\webapp-cart\data\cart-list.json', 'utf-8');
+
+    let info = Array();
+    let pre_list = fs.readFileSync(datafile, 'utf-8');
+    let info_update;
     if(pre_list !="" && pre_list != undefined){ //빈파일이 아닐때만(첫 입력이 아닌 경우)
-        cart_list =(JSON.parse(fs.readFileSync('src\webapp-cart\data\cart-list.json', 'utf-8'))); //파일에 저장되있던 기존 리스트(string형태의 json값들)를 자바스크립트 json객체로 변환
+        info =(JSON.parse(fs.readFileSync(datafile, 'utf-8'))); //파일에 저장되있던 기존 리스트(string형태의 json값들)를 자바스크립트 json객체로 변환
+        var now = new Date().getTime(); //현재 시각
+        info_update = {
+        checkout_num: Number(info.checkout_num + 1),    //결제 횟수 1증가.
+        p_number: Number(info.p_number) + Number(shipping_info.number), //지금까지 결제한 물품 수.
+        first_time: info.first_time,   //가장 처음 결제한 시간
+        last_time: now,
+        sum_price: Number(info.sum_price) + Number(shipping_info.sum_price),
+        avg_sales: (Number(info.sum_price) + Number(shipping_info.sum_price))/(now - info.first_time)*1000 //밀리세컨드에서 세컨드로 바꿔주기. ($/sec)
+        }
     }
+    else{   //첫 데이터 저장.
+
+        var now = new Date().getTime(); //현재 시각
+        info_update = {
+        checkout_num: 1,
+        p_number:  Number(shipping_info.number),
+        first_time: now,   //가장 처음 결제한 시간은 now이다.(처음 기록이므로)
+        last_time: now,
+        sum_price: Number(shipping_info.sum_price),
+        avg_sales: "not-yet, there was only one checkout"    //아직 측정 불가능
+        }
+    }
+
     
-    cart_list.push(add_product);
+
+
+    //파일에 info 저장.
     var success = false;
-    fs.writeFile(`src\webapp-cart\data\cart-list.json`, JSON.stringify(cart_list), 'utf-8', (err)=>{
+    fs.writeFile(datafile, JSON.stringify(info_update), 'utf-8', (err)=>{
         if(!err){
             success = true; //성공을 true로 바꿈
-            console.log('카트리스트 추가 성공');
+            console.log('정보 갱신 성공');
         }
         else{
-            console.log('카트리스트 추가 실패');
+            console.log('정보 갱신 실패');
             console.log(err);
         }
         
         const result = {
             success,
-            title: '카트 물품 추가',
-            added_id: id,
-            added_time: new Date()
+            title: '정보 갱신',
+            updated_time: new Date(),
+            explain: '쇼핑몰의 정보를 갱신(/info를 통해 확인가능).'
         };
         res.json(result);
         
@@ -80,79 +115,30 @@ app.get('/cart_add/:cart_id', async (req, res) => {  //cart에 물품 추가
 
 });
 
-app.get('/cart_remove', async (req, res) => {  //cart_list 모두 삭제(초기화)
+app.get('/info_reset', async (req, res) => {  //정보 초기화
     let success = false;
-    fs.writeFile(`src\webapp-cart\data\cart-list.json`, "", 'utf-8', (err)=>{
+    fs.writeFile(datafile, "", 'utf-8', (err)=>{
 
         if(!err){
             success = true; //성공을 true로 바꿈
-            console.log('카트리스트 초기화 성공');
+            console.log('쇼핑몰 정보 초기화 성공');
         }
         else{
-            console.log('카트리스트 초기화 실패');
+            console.log('쇼핑몰 정보 초기화 실패');
             console.log(err);
         }
 
         const result = {
             success,
-            title: '카트 물품 삭제',
-            removed_time: new Date()
+            title: '쇼핑몰 정보 초기화',
+            reset_time: new Date()
         }
-        //res.send('cart_list 초기화성공');
         res.json(result);
     });
 
 });
 
-app.get('/cart_remove/:remove_id', async (req, res) => {  //cart_list중에 해당id 삭제
-    let cart_list = Array();
-    const id = req.params.remove_id;
-    cart_list = (JSON.parse(fs.readFileSync('src\webapp-cart\data\cart-list.json', 'utf-8')));
-    
-    
-    for(var i in cart_list){ //삭제를 위해 cart_list에서 for를 통해 id탐색
-        console.log(cart_list[i].id);
-        if(cart_list[i].id == id){ //만약 삭제하고자 하는 id와 같은 id가 발견되면,
-            
-            cart_list.splice(i,1); //i번째 객체 삭제
-            fs.writeFile(`src\webapp-cart\data\cart-list.json`, JSON.stringify(cart_list), 'utf-8', (err)=>{
-                let success = false; //후에 성공시 true로 바뀜
-                if(!err){
-                    console.log('cartlist 에서 물품삭제성공!');
-                    success = true;
-                }
-                else{
-                    console.log('cartlist 에서 물품삭제실패!');
-                }
-
-                const result = {
-                    success,
-                    title: '카트 물품 삭제',
-                    removed_id: id,
-                    removed_time: new Date()
-                }
-                //res.send('cart_list 물품삭제 성공!');
-                res.json(result);
-                
-            });
-           
-            //return;  //한번에 하나만 삭제할것이므로 삭제후에는 loop탈출
-        }
-
-    }
-    //for문을 빠져나온것은 해당하는 물품이 없기 때문
-    res.json({
-        success: false,
-        title: '카트에 해당 물품이 없음',
-        removed_id: id,
-        removed_time: new Date()
-    })
-    
-
-
-
-});
 
 app.listen(port, function () {
-    console.log(`Example app listening on port 8008!`);
+    console.log(`Example app listening on port 8010!`);
 });

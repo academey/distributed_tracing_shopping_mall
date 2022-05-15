@@ -41,6 +41,43 @@ app.get('/cart_test', function(req, res){
     res.json(cart);
 })*/
 
+app.get('/cart_add', async (req, res) => {  //cart에 물품 추가
+    const add_product = await ProductAPI.loadListData();  //product중 cart_id와 같은 id를 가진 product값을 받아옴(cart_list에 추가해 줄 데이터)
+    //console.log(`cartlist에 저장할 데이터: ${add_product}`);
+    //const add = JSON.stringify(add_product);
+
+    let cart_list = Array();
+    let pre_list = fs.readFileSync('src\webapp-cart\data\cart-list.json', 'utf-8');
+    if(pre_list !="" && pre_list != undefined){ //빈파일이 아닐때만(첫 입력이 아닌 경우)
+        cart_list =(JSON.parse(fs.readFileSync('src\webapp-cart\data\cart-list.json', 'utf-8'))); //파일에 저장되있던 기존 리스트(string형태의 json값들)를 자바스크립트 json객체로 변환
+    }
+    
+    for(var i in add_product){
+        cart_list.push(add_product[i]);
+    }
+
+    var success = false;
+    fs.writeFile(`src\webapp-cart\data\cart-list.json`, JSON.stringify(cart_list), 'utf-8', (err)=>{
+        if(!err){
+            success = true; //성공을 true로 바꿈
+            console.log('카트리스트 추가 성공');
+        }
+        else{
+            console.log('카트리스트 추가 실패');
+            console.log(err);
+        }
+        
+        const result = {
+            success,
+            title: '카트 물품 추가',
+            added_time: new Date(),
+            explain: 'products전체 카트에 추가'
+        };
+        res.json(result);
+        
+    });
+
+});
 
 app.get('/cart_add/:cart_id', async (req, res) => {  //cart에 물품 추가
     let id = req.params.cart_id;
@@ -70,7 +107,8 @@ app.get('/cart_add/:cart_id', async (req, res) => {  //cart에 물품 추가
             success,
             title: '카트 물품 추가',
             added_id: id,
-            added_time: new Date()
+            added_time: new Date(),
+            explain: `${id}에 해당하는 product를 장바구니에 추가`
         };
         res.json(result);
         
@@ -94,7 +132,8 @@ app.get('/cart_remove', async (req, res) => {  //cart_list 모두 삭제(초기�
         const result = {
             success,
             title: '카트 물품 삭제',
-            removed_time: new Date()
+            removed_time: new Date(),
+            explain: '카트 물품 전체 초기화'
         }
         //res.send('cart_list 초기화성공');
         res.json(result);
@@ -127,7 +166,8 @@ app.get('/cart_remove/:remove_id', async (req, res) => {  //cart_list중에 해�
                     success,
                     title: '카트 물품 삭제',
                     removed_id: id,
-                    removed_time: new Date()
+                    removed_time: new Date(),
+                    explain: '특정 카트 물품만을 리스트에서 삭제'
                 }
                 //res.send('cart_list 물품삭제 성공!');
                 res.json(result);

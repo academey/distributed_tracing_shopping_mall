@@ -19,7 +19,7 @@ var port = (process.env.PRODUCT_PORT || '8007');
 const products = [{
     id: 1,
     title: '몽키 바나나',
-    price: 3,  //가격은 항상 USD기준,
+    price: 300,  //가격은 항상 USD기준,
     info: '바나나중에서도 최상급의 맛을 자랑하는 몽키 바나나! 빠른시간에 수입해와서 더 맛있어요',
     brand: '(주)창설후르츠',
     image: 'http://dnmart.co.kr/attach/main_img_4/79_202108_000_main.jpg',

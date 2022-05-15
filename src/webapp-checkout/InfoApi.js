@@ -5,14 +5,14 @@ import {requestApi} from './request.js';
 dotenv.config();
 
 
-export class ProductAPIClass {
+export class InfoAPIClass {
     getRequestURL(path) {
-        return `http://${process.env.PRODUCT_HOST}:${process.env.PRODUCT_PORT}/${path}`;
+        return `http://${process.env.INFO_HOST}:${process.env.INFO_PORT}/${path}`;
     }
 
-    loadListData = async () => { //product list 전체 호출
+    loadinfo = async () => { //cart_list 전체 호출(현재 cart_list에 있는것들)
         let requestURL = this.getRequestURL(
-            "product"
+            "info"
         );
         console.log('getRequestURL is ', requestURL);
         /* env 환경변수 제대로 되나 확인용
@@ -33,13 +33,13 @@ export class ProductAPIClass {
         }
     };
 
-    loadData = async (  //id를 통해 정보 얻어오기(특정 product의 세부정보)
-                          product_id
+    updateInfo = async ( 
+                          
                       ) => {
 
         const axiosResponse = await requestApi(
             this.getRequestURL(
-                `product/${product_id}`
+                `info_update`
             ), {
                 method: 'GET'
             });
@@ -47,6 +47,21 @@ export class ProductAPIClass {
 
         return axiosResponse.data;
     };
+
+    resetInfo = async ( 
+                      ) => {
+
+        const axiosResponse = await requestApi(
+            this.getRequestURL(
+                `info_reset`
+            ), {
+                method: 'GET'
+            });
+            //console.log(`데이터 확인: ${product_id},  ${axiosResponse.data}`);
+
+        return axiosResponse.data;
+    };
+       
 }
 
-export const ProductAPI = new ProductAPIClass();
+export const InfoAPI = new InfoAPIClass();

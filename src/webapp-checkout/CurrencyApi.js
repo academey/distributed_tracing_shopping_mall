@@ -25,7 +25,7 @@ export class CurrencyAPIClass {
                 requestURL, {
                     method: 'GET'
                 });
-            console.log('axiosResponse is ', axiosResponse);
+            //console.log('axiosResponse is ', axiosResponse);
             return axiosResponse.data;
         } catch (e) {
             console.log('error is ', e);

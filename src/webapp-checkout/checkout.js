@@ -2,11 +2,12 @@ import dotenv from 'dotenv';
 import express from 'express';
 
 import {PurchaseAPI} from "./purchaseApi.js";
-import cors from "cors";
 import { CartAPI } from './CartApi.js';
 import { CurrencyAPI } from './CurrencyApi.js';
 import { ShippingAPI } from './ShippingApi.js';
 import {ProductAPI} from './ProductApi.js';
+import {InfoAPI} from './InfoApi.js';
+import cors from "cors";
 
 dotenv.config();
 
@@ -17,7 +18,7 @@ app.options('*', cors());
 var port = (process.env.CHEKCOUT_PORT || '8009');
 
 
-// checkout app: 물건 구매의 메인이 되는곳. 
+// 전체 구매 절차를 담당하는 app, 
 
 
 app.get('/checkout', async (req, res) => {  //결제를 진행하는 앱(카트에 담겨있는 물품 일괄 결제)
@@ -47,7 +48,7 @@ app.get('/checkout', async (req, res) => {  //결제를 진행하는 앱(카트�
         console.log(e);
         res.json(e);
     }
-
+    console.log("Dfsadfdsknvlsdvndkl");
 
     var today = new Date();
     var card = card_data[0];
@@ -64,12 +65,12 @@ app.get('/checkout', async (req, res) => {  //결제를 진행하는 앱(카트�
     };
 
     //이후에는 이메일보내기 등, 결제와 함께 진행되는 다른 작업들 수행
-    
-
+    await InfoAPI.updateInfo();
+    console.log("됬음!!!!!!!!!!!!");
 
     //카트와 구매내역 삭제
     CartAPI.removeCartAll();
- 
+    ShippingAPI.removeShippingAll();
 
     res.json(result);
 
@@ -79,7 +80,7 @@ app.get('/checkout', async (req, res) => {  //결제를 진행하는 앱(카트�
 app.get('/checkout/:check_id', async (req, res) => {  //결제를 진행하는 앱(product중 id를 즉시 결제)
     var success = true; //실패시 false로 전환(에러뜨면)
     let card_data;
-    let cart_list;
+    let product;
     let currency;
     let shipping_info;
     var id = req.params.check_id;
@@ -124,8 +125,7 @@ app.get('/checkout/:check_id', async (req, res) => {  //결제를 진행하는 �
     
 
 
-    //카트와 구매내역 삭제
-    CartAPI.removeCartAll();
+    //구매내역 삭제
 
 
     res.json(result);
