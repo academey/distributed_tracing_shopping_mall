@@ -1,12 +1,11 @@
 import express from 'express';
-import fs from 'fs';
-import template from './lib/template.js';
-import {PurchaseAPI} from "./purchaseApi.js";
 import {ProductAPI} from "./productApi.js";
 import cors from "cors";
 import client from 'prom-client';
 import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
 
+dotenv.config();
 
 var app = express()
 app.use(cors());
@@ -42,14 +41,9 @@ app.get('/metrics', async (request, response) => {
 
 app.get('/metrics-test', (request, response) => {
     counter.inc(); // Increment by 1
-
+  
     const end = histogram.startTimer();
     const name = request.query.name ? request.query.name : 'World';
-    if(Math.random() < 0.5){ 
-        end({ method: request.method, 'status_code': 500 });
-        return res.status(500).json({text: '에러를 발생시키는 팟입니다'}); 
-    } 
-    
     response.send({content: `Hello, ${name}!`});
     // stop the timer
     end({ method: request.method, 'status_code': 200 });

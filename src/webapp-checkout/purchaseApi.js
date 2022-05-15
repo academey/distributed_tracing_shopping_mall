@@ -5,7 +5,7 @@ dotenv.config();
 
 export class PurchaseAPIClass {
     getRequestURL(path) {
-        return `http://localhost:8002/${path}`;
+        return `http://${process.env.PURCHASE_HOST}:${process.env.PURCHASE_PORT}/${path}`;
     }
 
     loadCardList = async () => {

@@ -104,14 +104,6 @@ spec:
         - name: purchase
           image: ghcr.io/academey/distributed_tracing_shopping_mall-purchase:main
           imagePullPolicy: Always
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: 8002
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: 8002
           ports:
             - containerPort: 8002
               protocol: TCP
@@ -209,3 +201,281 @@ spec:
           env:
           - name: API_ENDPOINT
             value: "http://search:8001/metrics-test"
+
+---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: ad
+# spec:
+#   selector:
+#     matchLabels:
+#       app: ad
+#   template:
+#     metadata:
+#       labels:
+#         app: ad
+#     spec:
+#       containers:
+#         - name: ad
+#           image: ghcr.io/academey/distributed_tracing_shopping_mall-ad:main
+#           imagePullPolicy: Always
+#           ports:
+#             - containerPort: 8003
+#               protocol: TCP
+
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: ad
+# spec:
+#   type: NodePort
+#   ports:
+#     - port: 8003
+#       nodePort: 31003
+#       protocol: TCP
+#   selector:
+#     app: ad
+
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: cart
+# spec:
+#   selector:
+#     matchLabels:
+#       app: cart
+#   template:
+#     metadata:
+#       labels:
+#         app: cart
+#     spec:
+#       containers:
+#         - name: cart
+#           image: ghcr.io/academey/distributed_tracing_shopping_mall-cart:main
+#           imagePullPolicy: Always
+#           ports:
+#             - containerPort: 8008
+#               protocol: TCP
+#           env:
+#           - name: PRODUCT_HOST
+#             value: "product"
+#           - name: PRODUCT_PORT
+#             value: "8007"
+
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: cart
+# spec:
+#   type: NodePort
+#   ports:
+#     - port: 8008
+#       nodePort: 31008
+#       protocol: TCP
+#   selector:
+#     app: cart
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checkout
+spec:
+  selector:
+    matchLabels:
+      app: checkout
+  template:
+    metadata:
+      labels:
+        app: checkout
+    spec:
+      containers:
+        - name: checkout
+          image: ghcr.io/academey/distributed_tracing_shopping_mall-checkout:main
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8009
+              protocol: TCP
+          env:
+          - name: PURCHASE_HOST
+            value: "purchase"
+          - name: PURCHASE_PORT
+            value: "8002"
+          - name: CART_HOST
+            value: "cart"
+          - name: CART_PORT
+            value: "8008"
+          - name: CURRENCY_HOST
+            value: "currency"
+          - name: CURRENCY_PORT
+            value: "8005"
+          - name: SHIPPING_HOST
+            value: "shipping"
+          - name: SHIPPING_PORT
+            value: "8006"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: checkout
+spec:
+  type: NodePort
+  ports:
+    - port: 8009
+      nodePort: 31009
+      protocol: TCP
+  selector:
+    app: checkout
+---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: currency
+# spec:
+#   selector:
+#     matchLabels:
+#       app: currency
+#   template:
+#     metadata:
+#       labels:
+#         app: currency
+#     spec:
+#       containers:
+#         - name: currency
+#           image: ghcr.io/academey/distributed_tracing_shopping_mall-currency:main
+#           imagePullPolicy: Always
+#           ports:
+#             - containerPort: 8005
+#               protocol: TCP
+
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: currency
+# spec:
+#   type: NodePort
+#   ports:
+#     - port: 8005
+#       nodePort: 31005
+#       protocol: TCP
+#   selector:
+#     app: currency
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: email
+# spec:
+#   selector:
+#     matchLabels:
+#       app: email
+#   template:
+#     metadata:
+#       labels:
+#         app: email
+#     spec:
+#       containers:
+#         - name: email
+#           image: ghcr.io/academey/distributed_tracing_shopping_mall-email:main
+#           imagePullPolicy: Always
+#           ports:
+#             - containerPort: 8004
+#               protocol: TCP
+
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: email
+# spec:
+#   type: NodePort
+#   ports:
+#     - port: 8004
+#       nodePort: 31004
+#       protocol: TCP
+#   selector:
+#     app: email
+# ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product
+spec:
+  selector:
+    matchLabels:
+      app: product
+  template:
+    metadata:
+      labels:
+        app: product
+    spec:
+      containers:
+        - name: product
+          image: ghcr.io/academey/distributed_tracing_shopping_mall-product:main
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8007
+              protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product
+spec:
+  type: NodePort
+  ports:
+    - port: 8007
+      nodePort: 31007
+      protocol: TCP
+  selector:
+    app: product
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: shipping
+# spec:
+#   selector:
+#     matchLabels:
+#       app: shipping
+#   template:
+#     metadata:
+#       labels:
+#         app: shipping
+#     spec:
+#       containers:
+#         - name: shipping
+#           image: ghcr.io/academey/distributed_tracing_shopping_mall-shipping:main
+#           imagePullPolicy: Always
+#           ports:
+#             - containerPort: 8006
+#               protocol: TCP
+#           env:
+#           - name: CART_HOST
+#             value: "cart"
+#           - name: CART_PORT
+#             value: "8008"
+#           - name: PRODUCT_HOST
+#             value: "PRODUCT"
+#           - name: PRODUCT_PORT
+#             value: "8007"
+
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: shipping
+# spec:
+#   type: NodePort
+#   ports:
+#     - port: 8006
+#       nodePort: 31006
+#       protocol: TCP
+#   selector:
+#     app: shipping

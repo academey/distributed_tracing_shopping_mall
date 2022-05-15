@@ -1,7 +1,7 @@
 FROM node:12
 
 # 앱 디렉터리 생성
-WORKDIR /app_search
+WORKDIR /app_email
 
 # 앱 의존성 설치
 # 가능한 경우(npm@5+) package.json과 package-lock.json을 모두 복사하기 위해
@@ -15,5 +15,5 @@ RUN npm install
 # 앱 소스 추가
 COPY . .
 
-EXPOSE 8001
-CMD [ "node", "search.js" ]
+EXPOSE 8004
+CMD [ "node", "email.js" ]

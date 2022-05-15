@@ -7,7 +7,7 @@ dotenv.config();
 
 export class CartAPIClass {
     getRequestURL(path) {
-        return `http://localhost:8008/${path}`; //이부분 .env undefined문제 때문에 string으로 바꾼것 후에 다시 수정해야함.
+        return `http://${process.env.CART_HOST}:${process.env.CART_PORT}/${path}`;
     }
 
     loadCartList = async () => { //cart_list 전체 호출(현재 cart_list에 있는것들)

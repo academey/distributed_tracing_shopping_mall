@@ -7,7 +7,7 @@ dotenv.config();
 
 export class CurrencyAPIClass {
     getRequestURL(path) {
-        return `http://localhost:8005/${path}`; //이부분 .env undefined문제 때문에 string으로 바꾼것 후에 다시 수정해야함.
+        return `http://${process.env.CURRENCY_HOST}:${process.env.CURRENCY_PORT}/${path}`;
     }
 
     loadCurrencyList = async () => { //product list 전체 호출

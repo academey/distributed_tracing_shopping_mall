@@ -1,22 +1,27 @@
 {
+  "name": "commerce",
+  "license": "MIT",
   "private": true,
+  "workspaces": [
+    "site",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "next dev",
-    "build": "next build"
+    "build": "turbo run build --scope=next-commerce --include-dependencies --no-deps",
+    "dev": "turbo run dev",
+    "start": "turbo run start",
+    "types": "turbo run types",
+    "prettier-fix": "prettier --write ."
   },
-  "dependencies": {
-    "@emotion/cache": "latest",
-    "@emotion/react": "latest",
-    "@emotion/server": "latest",
-    "@emotion/styled": "latest",
-    "@mui/icons-material": "latest",
-    "@mui/material": "latest",
-    "prop-types": "latest",
-    "axios": "^0.26.1",
-    "dotenv": "^16.0.0",
-    "next": "latest",
-    "qs": "^6.10.3",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
-  }
+  "devDependencies": {
+    "husky": "^7.0.4",
+    "prettier": "^2.5.1",
+    "turbo": "^1.1.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "turbo run lint"
+    }
+  },
+  "packageManager": "yarn@1.22.17"
 }

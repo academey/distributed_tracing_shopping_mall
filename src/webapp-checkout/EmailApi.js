@@ -7,7 +7,7 @@ dotenv.config();
 
 export class EmailAPIClass {
     getRequestURL(path) {
-        return `http://localhost:8007/${path}`; //이부분 .env undefined문제 때문에 string으로 바꾼것 후에 다시 수정해야함.
+        return `http://${process.env.EMAIL_HOST}:${process.env.EMAIL_PORT}/${path}`;
     }
 
 

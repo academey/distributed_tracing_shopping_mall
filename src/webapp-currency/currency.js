@@ -1,8 +1,5 @@
 import dotenv from 'dotenv';
 import express from 'express';
-import fs from 'fs';
-import template from './lib/template.js';
-import {PurchaseAPI} from "./purchaseApi.js";
 import cors from "cors";
 
 dotenv.config();
@@ -11,7 +8,7 @@ var app = express()
 app.use(cors());
 app.options('*', cors());
 
-var port = (process.env.PORT || '8001');
+var port = (process.env.PORT || '8005');
 
 
 // 각 나라의 화폐로 표현하기 위한 환율, 화폐정보 등을 반환하기 위한 app
