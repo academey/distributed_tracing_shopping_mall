@@ -1,11 +1,11 @@
 {
-  "name": "webapp_search",
+  "name": "webapp_cart",
   "type": "module",
   "version": "1.0.0",
   "description": "",
-  "main": "search.js",
+  "main": "cart.js",
   "scripts": {
-    "start": "node search.js",
+    "start": "node cart.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

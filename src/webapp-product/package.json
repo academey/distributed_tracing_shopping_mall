@@ -1,11 +1,11 @@
 {
-  "name": "webapp_search",
+  "name": "webapp_product",
   "type": "module",
   "version": "1.0.0",
   "description": "",
-  "main": "search.js",
+  "main": "product.js",
   "scripts": {
-    "start": "node search.js",
+    "start": "node product.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
