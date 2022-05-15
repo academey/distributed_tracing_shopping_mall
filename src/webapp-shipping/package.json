@@ -1,11 +1,11 @@
 {
-  "name": "webapp_search",
+  "name": "webapp_shipping",
   "type": "module",
   "version": "1.0.0",
   "description": "",
-  "main": "search.js",
+  "main": "shipping.js",
   "scripts": {
-    "start": "node search.js",
+    "start": "node shipping.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

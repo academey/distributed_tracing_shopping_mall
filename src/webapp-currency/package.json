@@ -1,11 +1,11 @@
 {
-  "name": "webapp_search",
+  "name": "webapp_currency",
   "type": "module",
   "version": "1.0.0",
   "description": "",
-  "main": "search.js",
+  "main": "currency.js",
   "scripts": {
-    "start": "node search.js",
+    "start": "node currency.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
