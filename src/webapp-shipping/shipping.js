@@ -11,7 +11,7 @@ var app = express()
 app.use(cors());
 app.options('*', cors());
 
-var port = (process.env.SHIPPING_PORT || '8006');
+var port = (process.env.PORT || '8006');
 
 const datafile = 'src\webapp-shipping\data\shipping-list.json';
 
