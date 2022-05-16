@@ -1,15 +1,12 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import fs from 'fs';
-import template from './lib/template.js';
-import {PurchaseAPI} from "./purchaseApi.js";
-import {ProductAPI} from "./ProductApi.js"
 import {ShippingAPI} from "./ShippingApi.js"
 import cors from "cors";
 import path from 'path';
 
 const __dirname = path.resolve();
-const datafile = __dirname+ `/webapp-info/data/info.json`;
+const datafile = `./data/info.json`;
 
 dotenv.config();
 

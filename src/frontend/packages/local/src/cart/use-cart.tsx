@@ -26,11 +26,20 @@ export const handler: SWRHook<any> = {
       return useMemo(
         () =>
           Object.create(
-            {},
+            {
+              subtotalPrice: 33,
+              currency: {
+                code: "JPY"
+              },
+              lineItems: [{
+                id: 3,
+              }
+              ]
+            },
             {
               isEmpty: {
                 get() {
-                  return true
+                  return false
                 },
                 enumerable: true,
               },

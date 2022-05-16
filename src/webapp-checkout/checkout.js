@@ -15,7 +15,7 @@ var app = express()
 app.use(cors());
 app.options('*', cors());
 
-var port = (process.env.CHEKCOUT_PORT || '8009');
+var port = (process.env.PORT || '8009');
 
 
 // 전체 구매 절차를 담당하는 app, 

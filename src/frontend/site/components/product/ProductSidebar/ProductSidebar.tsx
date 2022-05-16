@@ -9,6 +9,7 @@ import {
   selectDefaultOptionFromProduct,
   SelectedOptions,
 } from '../helpers'
+import {useRouter} from "next/router";
 
 interface ProductSidebarProps {
   product: Product
@@ -20,6 +21,7 @@ const ProductSidebar: FC<ProductSidebarProps> = ({ product, className }) => {
   const { openSidebar } = useUI()
   const [loading, setLoading] = useState(false)
   const [selectedOptions, setSelectedOptions] = useState<SelectedOptions>({})
+  const router = useRouter()
 
   useEffect(() => {
     selectDefaultOptionFromProduct(product, setSelectedOptions)
@@ -29,11 +31,12 @@ const ProductSidebar: FC<ProductSidebarProps> = ({ product, className }) => {
   const addToCart = async () => {
     setLoading(true)
     try {
-      await addItem({
-        productId: String(product.id),
-        variantId: String(variant ? variant.id : product.variants[0]?.id),
-      })
-      openSidebar()
+      await router.push(`/cart/add/${product.id}`)
+      // await addItem({
+      //   productId: String(product.id),
+      //   variantId: String(variant ? variant.id : product.variants[0]?.id),
+      // })
+      // openSidebar()
       setLoading(false)
     } catch (err) {
       setLoading(false)

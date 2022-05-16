@@ -7,28 +7,67 @@ import { Button, Text, Container } from '@components/ui'
 import { Bag, Cross, Check, MapPin, CreditCard } from '@components/icons'
 import { CartItem } from '@components/cart'
 import { useUI } from '@components/ui/context'
+import {ProductAPI} from "@components/api/productApi";
+import {Product} from "@commerce/types/product";
+import {InferGetServerSidePropsType} from "next";
+import {CartAPI} from "@components/api/cartApi";
 
-export async function getStaticProps({
-  preview,
-  locale,
-  locales,
-}: GetStaticPropsContext) {
-  const config = { locale, locales }
-  const pagesPromise = commerce.getAllPages({ config, preview })
-  const siteInfoPromise = commerce.getSiteInfo({ config, preview })
-  const { pages } = await pagesPromise
-  const { categories } = await siteInfoPromise
+// export async function getServerSideProps({
+//   preview,
+//   locale,
+//   locales,
+// }: GetStaticPropsContext) {
+//   const config = { locale, locales }
+//   const pagesPromise = commerce.getAllPages({ config, preview })
+//   const siteInfoPromise = commerce.getSiteInfo({ config, preview })
+//   const { pages } = await pagesPromise
+//   const { categories } = await siteInfoPromise
+//   return {
+//     props: { pages, categories },
+//   }
+// }
+
+export async function getServerSideProps() {
+  const cartList = await CartAPI.loadCartListData();
+  const convertedCartList =cartList.map((cart: any) => {
+    // {
+    //   "id": 1,
+    //   "title": "몽키 바나나",
+    //   "price": 300,
+    //   "info": "바나나중에서도 최상급의 맛을 자랑하는 몽키 바나나! 빠른시간에 수입해와서 더 맛있어요",
+    //   "brand": "(주)창설후르츠",
+    //   "image": "http://dnmart.co.kr/attach/main_img_4/79_202108_000_main.jpg",
+    //   "discount": 0.2
+    // },
+    return {
+      id: cart.id,
+      variant: {
+        price: cart.price,
+        listPrice: cart.price,
+        image: {
+          url: cart.image
+        }
+      },
+      quantity: 1
+    }
+
+  });
   return {
-    props: { pages, categories },
+    props: {
+      cartList: convertedCartList,
+    },
   }
 }
 
-export default function Cart() {
+
+export default function Cart({
+                               cartList,
+                             }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const error = null
   const success = null
   const { data, isLoading, isEmpty } = useCart()
   const { openSidebar, setSidebarView } = useUI()
-
+  console.log('cartList is ', cartList);
   const { price: subTotal } = usePrice(
     data && {
       amount: Number(data.subtotalPrice),
@@ -86,11 +125,11 @@ export default function Cart() {
             <Text variant="pageHeading">My Cart</Text>
             <Text variant="sectionHeading">Review your Order</Text>
             <ul className="py-6 space-y-6 sm:py-0 sm:space-y-0 sm:divide-y sm:divide-accent-2 border-b border-accent-2">
-              {data!.lineItems.map((item: any) => (
+              {cartList.map((item: any) => (
                 <CartItem
                   key={item.id}
                   item={item}
-                  currencyCode={data?.currency.code!}
+                  currencyCode={"USD"}
                 />
               ))}
             </ul>

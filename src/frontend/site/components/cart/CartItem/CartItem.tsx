@@ -9,6 +9,9 @@ import usePrice from '@framework/product/use-price'
 import useUpdateItem from '@framework/cart/use-update-item'
 import useRemoveItem from '@framework/cart/use-remove-item'
 import Quantity from '@components/ui/Quantity'
+import {CartAPI} from "@components/api/cartApi";
+import {redirect} from "next/dist/server/api-utils";
+import {Router, useRouter} from "next/router";
 
 type ItemOption = {
   name: string
@@ -34,6 +37,7 @@ const CartItem = ({
   const [quantity, setQuantity] = useState<number>(item.quantity)
   const removeItem = useRemoveItem()
   const updateItem = useUpdateItem({ item })
+  const router = useRouter()
 
   const { price } = usePrice({
     amount: item.variant.price * item.quantity,
@@ -55,12 +59,18 @@ const CartItem = ({
   }
 
   const handleRemove = async () => {
-    setRemoving(true)
-    try {
-      await removeItem(item)
-    } catch (error) {
-      setRemoving(false)
-    }
+    await router.push(`/cart/remove/${item.id}`)
+    // await Router.push('/hello-nextjs')
+    //
+    // setRemoving(true)
+    // try {
+    //   // await removeItem(item)
+    //   await CartAPI.removeCartListData({
+    //     productId: item.id
+    //   })
+    // } catch (error) {
+    //   setRemoving(false)
+    // }
   }
 
   // TODO: Add a type for this
