@@ -48,7 +48,7 @@ app.get('/checkout', async (req, res) => {  //결제를 진행하는 앱(카트�
         console.log(e);
         res.json(e);
     }
-    console.log("Dfsadfdsknvlsdvndkl");
+    //console.log("Dfsadfdsknvlsdvndkl");
 
     var today = new Date();
     var card = card_data[0];
@@ -66,7 +66,7 @@ app.get('/checkout', async (req, res) => {  //결제를 진행하는 앱(카트�
 
     //이후에는 이메일보내기 등, 결제와 함께 진행되는 다른 작업들 수행
     await InfoAPI.updateInfo();
-    console.log("됬음!!!!!!!!!!!!");
+    //console.log("됬음!!!!!!!!!!!!");
 
     //카트와 구매내역 삭제
     CartAPI.removeCartAll();
@@ -91,7 +91,7 @@ app.get('/checkout/:check_id', async (req, res) => {  //결제를 진행하는 �
         const product_P = ProductAPI.loadData(id);
         const currency_P = CurrencyAPI.loadCurrencyList()[0];
         
-        await ShippingAPI.addShippingAll();
+        await ShippingAPI.addShipping(id);
         const shipping_info_P = ShippingAPI.loadshippingInfo();
 
         card_data = await card_P;
@@ -123,38 +123,16 @@ app.get('/checkout/:check_id', async (req, res) => {  //결제를 진행하는 �
 
     //이후에는 이메일보내기 등, 결제와 함께 진행되는 다른 작업들 수행
     
-
+    await InfoAPI.updateInfo();
 
     //구매내역 삭제
-
+    ShippingAPI.removeShippingAll();
 
     res.json(result);
 
 
 });
  
-app.get('/search', function (req, res) {
-    const search_items = [{
-        id: 1,
-        title: 'search item test1'
-    },
-        {
-            id: 2,
-            title: 'search item test2'
-        }
-    ];
-    res.json(search_items);
-});
-
-app.get('/search/:search_id', function (req, res) {
-    const search = {
-        id: req.params.search_id,
-        title: 'search item test'
-    };
-    res.json(search);
-});
-
-
 app.listen(port, function () {
     console.log(`Example app listening on port 8009!`);
 });

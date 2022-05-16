@@ -4,6 +4,10 @@ import fs from 'fs';
 import {CartAPI} from "./CartApi.js";
 import cors from "cors";
 import { ProductAPI } from './ProductApi.js';
+import path from 'path';
+
+const __dirname = path.resolve();
+const datafile = __dirname+ `/webapp-shipping/data/shipping-list.json`;
 
 dotenv.config();
 
@@ -13,7 +17,6 @@ app.options('*', cors());
 
 var port = (process.env.PORT || '8006');
 
-const datafile = 'src\webapp-shipping\data\shipping-list.json';
 
 // shipping: 주문 내역 및 배송관리
 //success, title, add_id, add_time 등을 반환
@@ -98,7 +101,7 @@ app.get('/shipping_add', async (req, res) => {// 그냥 add를 하면 카트리�
         });
     }
 
-    fs.writeFile(`src\webapp-shipping\data\shipping-list.json`, JSON.stringify(shippingList), 'utf-8', (err)=>{
+    fs.writeFile(datafile, JSON.stringify(shippingList), 'utf-8', (err)=>{
         var success = false;
         if(!err){
             success = true; //성공을 true로 바꿈
@@ -145,7 +148,7 @@ app.get('/shipping_add/:shipping_id', async (req, res) => {  //특정 물품을 
     });    //물품을 리스트에 추가'
 
     var success = false;
-    fs.writeFile(`src\webapp-shipping\data\shipping-list.json`, JSON.stringify(shipping_list), 'utf-8', (err)=>{
+    fs.writeFile(datafile, JSON.stringify(shipping_list), 'utf-8', (err)=>{
         if(!err){
             success = true; //성공을 true로 바꿈
             console.log('주문내역 추가 성공');
@@ -171,7 +174,7 @@ app.get('/shipping_add/:shipping_id', async (req, res) => {  //특정 물품을 
 
 app.get('/shipping_remove', async (req, res) => {  //주문내역 모두 삭제(초기화)
     let success = false;
-    fs.writeFile(`src\webapp-shipping\data\shipping-list.json`, "", 'utf-8', (err)=>{
+    fs.writeFile(datafile, "", 'utf-8', (err)=>{
 
         if(!err){
             success = true; //성공을 true로 바꿈
@@ -197,45 +200,56 @@ app.get('/shipping_remove', async (req, res) => {  //주문내역 모두 삭제(
 app.get('/shipping_remove/:remove_id', async (req, res) => {  //주문내역 중에 해당id 삭제
     let shipping_list = Array();
     const id = req.params.remove_id;
-    shipping_list = (JSON.parse(fs.readFileSync('src\webapp-shipping\data\shipping-list.json', 'utf-8')));
-    
-    for(var i in shipping_list){ //삭제를 위해 cart_list에서 for를 통해 id탐색
-        console.log(shipping_list[i].id);
-        if(shipping_list[i].id == id){ //만약 삭제하고자 하는 id와 같은 id가 발견되면,
-            
-            shipping_list.splice(i,1); //i번째 객체 삭제
-            fs.writeFile(`src\webapp-shipping\data\shipping-list.json`, JSON.stringify(shipping_list), 'utf-8', (err)=>{
-                let success = false; //후에 성공시 true로 바뀜
-                if(!err){
-                    console.log('주문내역에서 물품삭제성공!');
-                    success = true;
-                }
-                else{
-                    console.log('주문내역에서 물품삭제실패!');
-                }
+    shipping_list = (JSON.parse(fs.readFileSync(datafile, 'utf-8')));
+    let result;
+    var flag = 0;
 
-                const result = {
+    for(var i in shipping_list){ //삭제를 위해 cart_list에서 for를 통해 id탐색
+        //console.log(shipping_list[i].id);
+        if(shipping_list[i].id == id){ //만약 삭제하고자 하는 id와 같은 id가 발견되면,
+            try{
+                flag = 1;  //찾음을 표시
+                shipping_list.splice(i,1); //i번째 객체 삭제
+                fs.writeFileSync(datafile, JSON.stringify(shipping_list), 'utf-8'); 
+                let success = true; //후에 성공시 true로 바뀜
+                result = {
                     success,
                     title: '주문내역 물품 삭제',
                     removed_id: id,
                     removed_time: new Date()
                 }
+                console.log('주문내역에서 물품삭제성공!');
 
                 res.json(result);
-                
-            });
-           
-
+            }catch(e){
+                console.log('주문내역에서 물품삭제실패!');
+                console.log(e.message);
+                let success = false; //후에 성공시 true로 바뀜
+                    result = {
+                        success,
+                        title: '주문내역 물품 삭제',
+                        removed_id: id,
+                        removed_time: new Date()
+                    }
+                res.json(result);
+            }
+            
+            
         }
 
     }
     //for문을 빠져나온것은 해당하는 물품이 없기 때문
-    res.json({
-        success: false,
-        title: '주문내역에 해당 물품이 없음',
-        removed_id: id,
-        removed_time: new Date()
-    })
+    if(flag == 0){
+        let success = false; 
+        result = {
+            success,
+            title: '주문내역에 해당 물품 없음',
+            removed_id: id,
+            removed_time: new Date()
+        }
+        res.json(result);
+    }
+
 });
 
 

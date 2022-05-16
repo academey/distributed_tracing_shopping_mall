@@ -41,7 +41,8 @@ app.get('/info', function (req, res) { //현재 데이터 반환
             first_time: "not-yet, there was no checkout",   //가장 처음 결제한 시간은 now이다.(처음 기록이므로)
             last_time: "not-yet, there was no checkout",
             sum_price: 0,
-            avg_sales: "not-yet, there was no checkout"    //아직 측정 불가능);
+            avg_sales: "not-yet, there was no checkout",    //아직 측정 불가능);
+            expain: "쇼핑몰의 매출/평균매출을 출력하며 평균매출은($/sec)이다."
          });
     }
 });
@@ -72,7 +73,8 @@ app.get('/info_update', async (req, res) => {  //info 추가
         first_time: info.first_time,   //가장 처음 결제한 시간
         last_time: now,
         sum_price: Number(info.sum_price) + Number(shipping_info.sum_price),
-        avg_sales: (Number(info.sum_price) + Number(shipping_info.sum_price))/(now - info.first_time)*1000 //밀리세컨드에서 세컨드로 바꿔주기. ($/sec)
+        avg_sales: (Number(info.sum_price) + Number(shipping_info.sum_price))/(now - info.first_time)*1000, //밀리세컨드에서 세컨드로 바꿔주기. ($/sec)
+        expain: "쇼핑몰의 매출/평균매출을 출력하며 평균매출은($/sec)이다."
         }
     }
     else{   //첫 데이터 저장.
@@ -84,7 +86,8 @@ app.get('/info_update', async (req, res) => {  //info 추가
         first_time: now,   //가장 처음 결제한 시간은 now이다.(처음 기록이므로)
         last_time: now,
         sum_price: Number(shipping_info.sum_price),
-        avg_sales: "not-yet, there was only one checkout"    //아직 측정 불가능
+        avg_sales: "not-yet, there was only one checkout",    //아직 측정 불가능
+        expain: "쇼핑몰의 매출/평균매출을 출력하며 평균매출은($/sec)이다."
         }
     }
 
