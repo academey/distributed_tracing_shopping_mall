@@ -22,7 +22,11 @@ var port = (process.env.PORT || '8008');
 
 
 app.get('/cart', function (req, res) { //현재 cart_list 반환, 비어있는 경우 "empty" 반환
+<<<<<<< HEAD
     let cart_list = (fs.readFileSync(datafile, 'utf-8'));
+=======
+    let cart_list = (fs.readFileSync(`./data/cart-list.json`, 'utf-8'));
+>>>>>>> 57ef20deadfeeb1d0b4e524c8e329aa599ca89cb
     if(cart_list != "" && cart_list != undefined){ //빈파일("")이 아닐때만, 빈파일이면 JSON으로 변환이 안됨.
         console.log("빈파일 아님!!!!");
         cart_list = JSON.parse(cart_list);
@@ -52,9 +56,15 @@ app.get('/cart_add', async (req, res) => {  //cart에 물품 추가
     //const add = JSON.stringify(add_product);
 
     let cart_list = Array();
+<<<<<<< HEAD
     let pre_list = fs.readFileSync(datafile, 'utf-8');
     if(pre_list !="" && pre_list != undefined){ //빈파일이 아닐때만(첫 입력이 아닌 경우)
         cart_list =(JSON.parse(fs.readFileSync(datafile, 'utf-8'))); //파일에 저장되있던 기존 리스트(string형태의 json값들)를 자바스크립트 json객체로 변환
+=======
+    let pre_list = fs.readFileSync(`./data/cart-list.json`, 'utf-8');
+    if(pre_list !="" && pre_list != undefined){ //빈파일이 아닐때만(첫 입력이 아닌 경우)
+        cart_list =(JSON.parse(fs.readFileSync(`./data/cart-list.json`, 'utf-8'))); //파일에 저장되있던 기존 리스트(string형태의 json값들)를 자바스크립트 json객체로 변환
+>>>>>>> 57ef20deadfeeb1d0b4e524c8e329aa599ca89cb
     }
     
     for(var i in add_product){
@@ -65,7 +75,11 @@ app.get('/cart_add', async (req, res) => {  //cart에 물품 추가
     console.log(cart_list);
 
     var success = false;
+<<<<<<< HEAD
     fs.writeFile(datafile, JSON.stringify(cart_list), 'utf-8', (err)=>{
+=======
+    fs.writeFile(`./data/cart-list.json`, JSON.stringify(cart_list), 'utf-8', (err)=>{
+>>>>>>> 57ef20deadfeeb1d0b4e524c8e329aa599ca89cb
         if(!err){
             success = true; //성공을 true로 바꿈
             console.log('카트리스트 추가 성공');
@@ -94,14 +108,24 @@ app.get('/cart_add/:cart_id', async (req, res) => {  //cart에 물품 추가
     //const add = JSON.stringify(add_product);
 
     let cart_list = Array();
+<<<<<<< HEAD
     let pre_list = fs.readFileSync(datafile, 'utf-8');
     if(pre_list !="" && pre_list != undefined){ //빈파일이 아닐때만(첫 입력이 아닌 경우)
         cart_list =(JSON.parse(fs.readFileSync(datafile, 'utf-8'))); //파일에 저장되있던 기존 리스트(string형태의 json값들)를 자바스크립트 json객체로 변환
+=======
+    let pre_list = fs.readFileSync(`./data/cart-list.json`, 'utf-8');
+    if(pre_list !="" && pre_list != undefined){ //빈파일이 아닐때만(첫 입력이 아닌 경우)
+        cart_list =(JSON.parse(fs.readFileSync(`./data/cart-list.json`, 'utf-8'))); //파일에 저장되있던 기존 리스트(string형태의 json값들)를 자바스크립트 json객체로 변환
+>>>>>>> 57ef20deadfeeb1d0b4e524c8e329aa599ca89cb
     }
     
     cart_list.push(add_product);
     var success = false;
+<<<<<<< HEAD
     fs.writeFile(datafile, JSON.stringify(cart_list), 'utf-8', (err)=>{
+=======
+    fs.writeFile(`./data/cart-list.json`, JSON.stringify(cart_list), 'utf-8', (err)=>{
+>>>>>>> 57ef20deadfeeb1d0b4e524c8e329aa599ca89cb
         if(!err){
             success = true; //성공을 true로 바꿈
             console.log('카트리스트 추가 성공');
@@ -126,7 +150,11 @@ app.get('/cart_add/:cart_id', async (req, res) => {  //cart에 물품 추가
 
 app.get('/cart_remove', async (req, res) => {  //cart_list 모두 삭제(초기화)
     let success = false;
+<<<<<<< HEAD
     fs.writeFile(datafile, "", 'utf-8', (err)=>{
+=======
+    fs.writeFile(`./data/cart-list.json`, "", 'utf-8', (err)=>{
+>>>>>>> 57ef20deadfeeb1d0b4e524c8e329aa599ca89cb
 
         if(!err){
             success = true; //성공을 true로 바꿈
@@ -152,7 +180,11 @@ app.get('/cart_remove', async (req, res) => {  //cart_list 모두 삭제(초기�
 app.get('/cart_remove/:remove_id', async (req, res) => {  //cart_list중에 해당id 삭제
     let cart_list = Array();
     const id = req.params.remove_id;
+<<<<<<< HEAD
     cart_list = (JSON.parse(fs.readFileSync(datafile, 'utf-8')));
+=======
+    cart_list = (JSON.parse(fs.readFileSync(`./data/cart-list.json`, 'utf-8')));
+>>>>>>> 57ef20deadfeeb1d0b4e524c8e329aa599ca89cb
     
     
     for(var i in cart_list){ //삭제를 위해 cart_list에서 for를 통해 id탐색
@@ -160,7 +192,11 @@ app.get('/cart_remove/:remove_id', async (req, res) => {  //cart_list중에 해�
         if(cart_list[i].id == id){ //만약 삭제하고자 하는 id와 같은 id가 발견되면,
             
             cart_list.splice(i,1); //i번째 객체 삭제
+<<<<<<< HEAD
             fs.writeFile(datafile, JSON.stringify(cart_list), 'utf-8', (err)=>{
+=======
+            fs.writeFile(`./data/cart-list.json`, JSON.stringify(cart_list), 'utf-8', (err)=>{
+>>>>>>> 57ef20deadfeeb1d0b4e524c8e329aa599ca89cb
                 let success = false; //후에 성공시 true로 바뀜
                 if(!err){
                     console.log('cartlist 에서 물품삭제성공!');
