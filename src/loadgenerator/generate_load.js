@@ -1,16 +1,21 @@
 const exec = require('await-exec')
  
 
-var API_ENDPOINT = (process.env.API_ENDPOINT || 'https://test.k6.io');
+var GET_ALL_RPODUCT_ENDPOINT = process.env.GET_ALL_RPODUCT_ENDPOINT
+var SEARCH_PRODUCT_ENDPOINT = process.env.SEARCH_PRODUCT_ENDPOINT
+var GET_ONE_PRODUCT_ENDPOINT = process.env.GET_ONE_PRODUCT_ENDPOINT
+var SEE_AD_ENDPOINT = process.env.SEE_AD_ENDPOINT
+var ADD_PRODUCT_TO_CART_ENDPOINT = process.env.ADD_PRODUCT_TO_CART_ENDPOINT
+var CHECKOUT_CART_ENDPOINT = process.env.CHECKOUT_CART_ENDPOINT
 
 async function logger (text) {
-  const result = await exec(`k6 -e API_ENDPOINT=${API_ENDPOINT} run script.js`)
+  const result = await exec(`k6 -e GET_ALL_RPODUCT_ENDPOINT=${GET_ALL_RPODUCT_ENDPOINT} SEARCH_PRODUCT_ENDPOINT=${SEARCH_PRODUCT_ENDPOINT} GET_ONE_PRODUCT_ENDPOINT=${GET_ONE_PRODUCT_ENDPOINT} SEE_AD_ENDPOINT=${SEE_AD_ENDPOINT} ADD_PRODUCT_TO_CART_ENDPOINT=${ADD_PRODUCT_TO_CART_ENDPOINT} CHECKOUT_CART_ENDPOINT=${CHECKOUT_CART_ENDPOINT} run script.js`)
   console.log(result.stdout)
 }
  
 Promise.resolve().then(function resolver() {
     return logger()
-    .then(() => {console.log("its called")})
+    .then(() => {console.log("called")})
     .then(resolver);
 }).catch((error) => {
     console.log("Error: " + error);

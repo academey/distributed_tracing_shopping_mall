@@ -16,36 +16,39 @@ export const options = {
 const SLEEP_DURATION = 0.1;
 
 export default function () {
-  // http.get(checkout -> 장바구니 결제);
-  // http.get(checkout -> 바로 결제);
-  // http.get(광고 조회);
-  // const res = http.get("http://localhost:8008/cart");
-  // sleep(1);
-
+  const params = {
+    tags: {
+      name: 'get_all_product', // first request
+    },
+  };
   group('cite3 shopping mall scenario', (_) => {
-    // Login request
-    const login_response = http.get('http://localhost:8008/cart', params);  
+    // const get_all_product_response = http.get('http://localhost:8007/product', params);  
+    const get_all_product_response = http.get(__ENV.GET_ALL_RPODUCT_ENDPOINT, params);  
     sleep(SLEEP_DURATION);
 
-    // Get user profile request
-    const user_profile_response = http.get(
-      'http://localhost:8008/cart',
-      params
-    );
+    params.tags.name = 'search_product';
+    // const search_product_response = http.get('http://localhost:8001/search', params);  
+    const search_product_response = http.get(__ENV.SEARCH_PRODUCT_ENDPOINT, params);  
     sleep(SLEEP_DURATION);
 
-    // Update user profile request
-    params.tags.name = 'update-user-profile';
-    const update_profile_response = http.post(
-      'http://localhost:8008/cart',
-      params
-    );
+    params.tags.name = 'get_one_product';
+    // const get_one_product_response = http.get('http://localhost:8007/product/1', params);  
+    const get_one_product_response = http.get(__ENV.GET_ONE_PRODUCT_ENDPOINT, params);  
     sleep(SLEEP_DURATION);
 
-    // Logout request
-    params.tags.name = 'logout';
-    const logout_response = http.get('http://localhost:8008/cart', params);
+    params.tags.name = 'see_ad';
+    // const see_ad_response = http.get('http://localhost:8003/ad', params);  
+    const see_ad_response = http.get(__ENV.SEE_AD_ENDPOINT, params);  
+    sleep(SLEEP_DURATION);
+    
+    params.tags.name = 'add_product_to_cart';
+    // const add_product_to_cart_response = http.get('http://localhost:8008/cart_add/1', params);  
+    const add_product_to_cart_response = http.get(__ENV.ADD_PRODUCT_TO_CART_ENDPOINT, params);  
+    sleep(SLEEP_DURATION);
+
+    params.tags.name = 'checkout_cart';
+    // const checkout_cart_response = http.get('http://localhost:8009/checkout', params);
+    const checkout_cart_response = http.get(__ENV.CHECKOUT_CART_ENDPOINT, params);
     sleep(SLEEP_DURATION);
   });
-
 }
