@@ -1,35 +1,25 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import {SearchAPI} from "../src/api/searchApi";
+import {SearchAPI} from "../src/components/api/searchApi";
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import ProTip from '../src/components/ProTip';
 import Link from '../src/components/Link';
 import Copyright from '../src/components/Copyright';
+import {ProductAPI} from "../src/components/api/productApi";
+import ProductCard from "../src/components/ProductCard";
 
 export const getServerSideProps = async () => {
-    try {
-        const purchaseItemList = await SearchAPI.loadPurchaseItemList();
-        const searchListData = await SearchAPI.loadSearchListData();
-        return {
-            props: {
-                purchaseItemList,
-                searchListData
-            },
-        }
-    } catch (e) {
-        return {
-            props: {
-                purchaseItemList: [],
-                searchListData: []
-            },
-        }
+    const products = await ProductAPI.loadProductListData();
+    return {
+        props: {
+            products: products
+        },
     }
-
 }
 
-export default function Home({searchListData, purchaseItemList}) {
+export default function Home({products}) {
     return (
         <div className={styles.container}>
             <Container maxWidth="sm">
@@ -50,14 +40,9 @@ export default function Home({searchListData, purchaseItemList}) {
             </Head>
 
             <main className={styles.main}>
-                <div style={{color: 'red'}}>
-                    {searchListData.map(search => {
-                        return search.title
-                    })}
-                </div>
                 <div style={{color: 'blue'}}>
-                    {purchaseItemList.map(purchaseItem => {
-                        return purchaseItem
+                    {products.map(product => {
+                        return <ProductCard product={product} />
                     })}
                 </div>
                 <h1 className={styles.title}>

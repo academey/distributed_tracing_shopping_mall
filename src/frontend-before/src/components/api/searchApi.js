@@ -2,6 +2,7 @@ import {requestApi} from './request.js';
 
 export class SearchAPIClass {
     getRequestURL(path) {
+        // return `${process.env.SEARCH_HOST}:${process.env.SEARCH_PORT}/${path}`;
         return `${process.env.SEARCH_HOST}:${process.env.SEARCH_PORT}/${path}`;
     }
 
@@ -20,16 +21,6 @@ export class SearchAPIClass {
             method: 'GET'
         });
 
-        return axiosResponse.data;
-    };
-
-    loadPurchaseItemList = async () => {
-        let requestURL = this.getRequestURL("purchase_list");
-        console.log('getRequestURL is ', requestURL);
-        const axiosResponse = await requestApi(requestURL, {
-            method: 'GET'
-        });
-        console.log('axiosResponse is ', axiosResponse);
         return axiosResponse.data;
     };
 }
