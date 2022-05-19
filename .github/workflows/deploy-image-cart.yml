@@ -43,5 +43,5 @@ jobs:
         with:
           context: ./src/webapp-cart
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ghcr.io/academey/distributed_tracing_shopping_mall-cart:error
           labels: cart-${{ steps.meta.outputs.labels }}
