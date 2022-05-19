@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import fs from 'fs';
 import {ShippingAPI} from "./ShippingApi.js"
+import client from 'prom-client';
 import cors from "cors";
 import path from 'path';
 
@@ -18,6 +19,31 @@ var port = (process.env.PORT || '8010');
 
 
 // 쇼핑몰 앱 전체의 데이터(매출 등)을 관리하는 앱.
+client.collectDefaultMetrics({ prefix: 'cite3_info:' });
+const gauge = new client.Gauge({
+    name: 'cite3_info:statistic',
+    help: '쇼핑몰의 평균매출액',
+    labelNames: ['method'],
+  });
+
+app.get('/metrics', async (request, response) => {
+    response.set('Content-Type', client.register.contentType);
+    let metrics = await client.register.metrics();
+
+    let info = (fs.readFileSync(datafile, 'utf-8'));
+    if(info != "" && info != undefined){ //빈파일("")이 아닐때만, 빈파일이면 JSON으로 변환이 안됨.
+        info = JSON.parse(info);
+        console.log("저장된 info:(아래)");
+        console.log(info);
+        console.log(info["checkout_num"]);
+        gauge.labels('checkout_count').set(info["checkout_num"]);
+        gauge.labels('purchased_product_count').set(info["p_number"]);
+        gauge.labels('sum_price').set(info["sum_price"]);
+        gauge.labels('avg_price').set(info["avg_sales"]);        
+    }
+
+    response.send(metrics);
+});
 
 
 
