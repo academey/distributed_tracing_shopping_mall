@@ -23,10 +23,6 @@ var port = (process.env.PORT || '8008');
 
 
 app.get('/cart', function (req, res) { //현재 cart_list 반환, 비어있는 경우 "empty" 반환
-    if(Math.random() < 0.5){  
-        return res.status(500).json({text: '에러를 발생시키는 팟입니다'});  
-    }  
-
     let cart_list = (fs.readFileSync(datafile, 'utf-8'));
     if(cart_list != "" && cart_list != undefined){ //빈파일("")이 아닐때만, 빈파일이면 JSON으로 변환이 안됨.
         console.log("빈파일 아님!!!!");
@@ -52,10 +48,6 @@ app.get('/cart_test', function(req, res){
 })*/
 
 app.get('/cart_add', async (req, res) => {  //cart에 물품 추가
-    if(Math.random() < 0.5){  
-        return res.status(500).json({text: '에러를 발생시키는 팟입니다'});  
-    }  
-
     const add_product = await ProductAPI.loadListData();  //product중 cart_id와 같은 id를 가진 product값을 받아옴(cart_list에 추가해 줄 데이터)
     //console.log(`cartlist에 저장할 데이터: ${add_product}`);
     //const add = JSON.stringify(add_product);
@@ -97,10 +89,6 @@ app.get('/cart_add', async (req, res) => {  //cart에 물품 추가
 });
 
 app.get('/cart_add/:cart_id', async (req, res) => {  //cart에 물품 추가
-    if(Math.random() < 0.5){  
-        return res.status(500).json({text: '에러를 발생시키는 팟입니다'});  
-    }  
-    
     let id = req.params.cart_id;
     const add_product = await ProductAPI.loadData(id);  //product중 cart_id와 같은 id를 가진 product값을 받아옴(cart_list에 추가해 줄 데이터)
     console.log(`cartlist에 저장할 데이터: ${add_product}`);
@@ -138,9 +126,6 @@ app.get('/cart_add/:cart_id', async (req, res) => {  //cart에 물품 추가
 });
 
 app.get('/cart_remove', async (req, res) => {  //cart_list 모두 삭제(초기화)
-    if(Math.random() < 0.5){  
-        return res.status(500).json({text: '에러를 발생시키는 팟입니다'});  
-    }  
     let success = false;
     fs.writeFile(datafile, "", 'utf-8', (err)=>{
 
@@ -166,10 +151,6 @@ app.get('/cart_remove', async (req, res) => {  //cart_list 모두 삭제(초기�
 });
 
 app.get('/cart_remove/:remove_id', async (req, res) => {  //cart_list중에 해당id 삭제
-    if(Math.random() < 0.5){  
-        return res.status(500).json({text: '에러를 발생시키는 팟입니다'});  
-    }  
-
     let cart_list = Array();
     const id = req.params.remove_id;
     cart_list = (JSON.parse(fs.readFileSync(datafile, 'utf-8')));
