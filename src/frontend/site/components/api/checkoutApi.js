@@ -14,6 +14,15 @@ export class CheckoutAPIClass {
         return axiosResponse.data;
     };
 
+  checkoutOneProduct = async (productId) => {
+    let requestURL = this.getRequestURL(`checkout/${productId}`);
+    const axiosResponse = await requestApi(requestURL, {
+      method: 'GET'
+    });
+
+    return axiosResponse.data;
+  };
+
   addCheckoutListData = async ({productId}) => {
     let requestURL = this.getRequestURL(`cart_add/${productId}`);
     console.log('getRequestURL is ', requestURL);

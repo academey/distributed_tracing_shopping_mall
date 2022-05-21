@@ -10,7 +10,8 @@ const isVendure = provider === '@vercel/commerce-vendure'
 
 module.exports = withCommerceConfig({
   images: {
-    domains: ['dnmart.co.kr', 'dimg.donga.com'],
+    domains: ['dnmart.co.kr', 'dimg.donga.com', 'usercontents-d.styleshare.io', 'luxavenue.co.kr', 'img.etnews.com'
+  ],
   },
   commerce,
   i18n: {

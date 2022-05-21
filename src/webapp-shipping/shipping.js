@@ -7,7 +7,7 @@ import { ProductAPI } from './ProductApi.js';
 import path from 'path';
 
 const __dirname = path.resolve();
-const datafile = __dirname+ `/webapp-shipping/data/shipping-list.json`;
+const datafile = './data/shipping-list.json';
 
 dotenv.config();
 

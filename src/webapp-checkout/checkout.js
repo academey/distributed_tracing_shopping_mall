@@ -42,13 +42,12 @@ app.get('/checkout', async (req, res) => {  //결제를 진행하는 앱(카트�
         currency = await currency_P;
         shipping_info = await shipping_info_P;
 
-    }catch (e){
+    } catch (e){
         success = false;    //실패
         console.log("에러발생함!!");
         console.log(e);
         res.json(e);
     }
-    //console.log("Dfsadfdsknvlsdvndkl");
 
     var today = new Date();
     var card = card_data[0];
@@ -90,8 +89,10 @@ app.get('/checkout/:check_id', async (req, res) => {  //결제를 진행하는 �
         const card_P = PurchaseAPI.loadCardList();
         const product_P = ProductAPI.loadData(id);
         const currency_P = CurrencyAPI.loadCurrencyList()[0];
+        console.log(1)
         
         await ShippingAPI.addShipping(id);
+        console.log(2)
         const shipping_info_P = ShippingAPI.loadshippingInfo();
 
         card_data = await card_P;

@@ -43,6 +43,16 @@ const ProductSidebar: FC<ProductSidebarProps> = ({ product, className }) => {
     }
   }
 
+  const checkoutThisOne = async () => {
+    setLoading(true)
+    try {
+      await router.push(`/checkout/${product.id}`)
+      setLoading(false)
+    } catch (err) {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className={className}>
       <ProductOptions
@@ -73,6 +83,24 @@ const ProductSidebar: FC<ProductSidebarProps> = ({ product, className }) => {
               ? 'Not Available'
               : 'Add To Cart'}
           </Button>
+
+        <Button
+          style={{
+            marginTop: 10
+          }}
+          aria-label="Checkout this one"
+          type="button"
+          className={s.button}
+          onClick={() => {
+            checkoutThisOne()
+          }}
+          loading={loading}
+          disabled={variant?.availableForSale === false}
+        >
+          {variant?.availableForSale === false
+            ? 'Not Available'
+            : 'Checkout this one'}
+        </Button>
       </div>
       <div className="mt-6">
         <Collapse title="Care">

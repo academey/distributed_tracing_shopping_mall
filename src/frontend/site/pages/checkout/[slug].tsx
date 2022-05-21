@@ -19,10 +19,12 @@ export async function getServerSideProps({
                                            locales,
                                            preview,
                                          }: GetStaticPropsContext<{ slug: string }>) {
-  await CheckoutAPI.checkout();
+  let productId = parseInt(params!.slug, 10);
+  await CheckoutAPI.checkoutOneProduct(productId)
 
   return {
     props: {
+      productId
     },
   }
 }
@@ -46,18 +48,19 @@ export async function getServerSideProps({
 // }
 
 export default function Slug({
+                               productId,
                              }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter()
   setTimeout(() => {
     router.push('/cart')
-    console.log("체크아웃 완료했습니다")}, 3000);
+    console.log("첫 번째 메시지")}, 3000);
 
 
   return router.isFallback ? (
     <h1>Loading...</h1>
   ) : (
     <div>
-      체크아웃 완료했습니다
+      단 건 체크아웃 완료했습니다
       <Link href={'/cart'} > 돌아가기 </Link>
     </div>
   )

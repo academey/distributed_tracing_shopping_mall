@@ -21,13 +21,15 @@ app.get('/ad', function (req, res) {
         id: 1,
         title: `운동화광고`,
         text: `아디다스 신상품 무려 40% 할인`,
-        clinet: `아디다스`
+        brand: `아디다스`,
+        image: 'https://usercontents-d.styleshare.io/images/i5d6c758ee9732/1920x1920'
     },
         {
             id: 2,
-            title: `넥슨게임광고`,
-            text: `신규 게임 사전등록 이벤트`,
-            clinet: `넥슨`
+            title: `지갑`,
+            text: `구찌 지갑입니다`,
+            brand: `구찌`,
+            image: 'https://luxavenue.co.kr/data/goods/1/2021/04/_temp_16185877393666view.jpg'
         }
     ];
     res.json(ad_info);

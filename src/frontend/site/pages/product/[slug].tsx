@@ -10,6 +10,7 @@ import {ProductView} from '@components/product'
 import {InferGetServerSidePropsType} from "next";
 import {ProductAPI} from "@components/api/productApi";
 import {Product} from "@commerce/types/product";
+import {AdAPI} from "@components/api/adApi";
 
 export async function getServerSideProps({
                                            params,
@@ -43,6 +44,12 @@ export async function getServerSideProps({
   );
 
   console.log('myProduct is ', myProduct);
+
+  const adList = await AdAPI.loadAdListData();
+
+  console.log('myProduct is ', myProduct);
+  console.log('adList is ', adList);
+  console.log('relatedProducts is ', relatedProducts);
   const convertedProduct: Product = {
     id: myProduct.id,
     name: myProduct.title,
@@ -92,11 +99,66 @@ export async function getServerSideProps({
 
     ]
   }
+
+  const convertedRelatedProducts: Product[] = adList.map(ad => {
+    return {
+      id: ad.id,
+      name: ad.title,
+      vendor: ad.brand,
+      description: ad.title,
+      path: `/${ad.id}`,
+      slug: ad.id,
+      price: {
+        value: ad.title,
+        currencyCode: 'USD'
+      },
+      descriptionHtml: `<p><span>${ad.title}&nbsp;</span><strong>limited edition</strong><span>&nbsp;</strong></p>`,
+      images: [
+        {
+          url: ad.image,
+          alt: ad.title,
+          // altText: myProduct.title,
+          // width: 1000,
+          // height: 1000
+        }
+      ],
+      variants: [
+        {
+          id: "Z2lkOi8vc2hvcGlmeS9Qcms9kdWN0LzU0NDczMjUwMjQ0MjAss=",
+          options: [
+            {
+              __typename: "MultipleChoiceOption",
+              id: "asd",
+              displayName: "Size",
+              values:
+                [
+                  {label: "XL"}
+                ]
+            }
+          ]
+        }
+      ],
+      options: [
+        {
+          id: "option-color",
+          displayName: "Color",
+          values: [{
+            label: "color",
+            hexColors: ["#222"]
+          }]
+        }
+
+      ]
+    }
+  }
+  );
+
+
   return {
     props: {
       pages,
       product: convertedProduct,
-      relatedProducts,
+      relatedProducts: convertedRelatedProducts,
       categories,
     },
   }

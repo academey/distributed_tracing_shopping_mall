@@ -72,8 +72,8 @@ export async function getServerSideProps({
         {
           url: myProduct.image,
           altText: myProduct.title,
-          width: 1000,
-          height: 1000
+          width: 1200,
+          height: 500
         }
       ],
       variants: [],
