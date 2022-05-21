@@ -100,7 +100,7 @@ export async function getServerSideProps({
     ]
   }
 
-  const convertedRelatedProducts: Product[] = adList.map(ad => {
+  const convertedRelatedProducts: Product[] = adList.map((ad: any) => {
     return {
       id: ad.id,
       name: ad.title,
