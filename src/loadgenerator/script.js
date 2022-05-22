@@ -6,7 +6,7 @@ export const options = {
   scenarios: {
     contacts: {
       executor: 'per-vu-iterations',
-      vus: 10,
+      vus: 1,
       iterations: 1
     },
   },
