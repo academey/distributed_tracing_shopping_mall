@@ -29,7 +29,7 @@
 <br />
 <div align="center">
 
-  <h3 align="center">Distributed Tracing Shopping Mall</h3>
+  <h2 align="center">Distributed Tracing Shopping Mall</h2>
 
   ![그림1](https://user-images.githubusercontent.com/14977613/169700253-a99ae1ab-2705-4b63-a6ef-4999471e584a.png)
   <p align="center">
