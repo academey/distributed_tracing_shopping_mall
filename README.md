@@ -29,20 +29,13 @@
 <br />
 <div align="center">
 
-  
-  ![그림1](https://user-images.githubusercontent.com/14977613/169700253-a99ae1ab-2705-4b63-a6ef-4999471e584a.png)
-
- 
-  <a href="https://github.com/academey/distributed_tracing_shopping_mall">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
-
   <h3 align="center">Distributed Tracing Shopping Mall</h3>
 
+  ![그림1](https://user-images.githubusercontent.com/14977613/169700253-a99ae1ab-2705-4b63-a6ef-4999471e584a.png)
   <p align="center">
     k8s 와 istio 를 이용한 분산 추적이 가능한 쇼핑몰
     <br />
-    <!-- <a href="https://github.com/academey/distributed_tracing_shopping_mall"><strong>Explore the docs »</strong></a> -->
+    <!-- <a href="https://github.com/academey/distributed_tracing_shopping_mall"><strong>Explore the report »</strong></a> -->
     <br />
     <br />
     <a href="https://github.com/academey/distributed_tracing_shopping_mall">View Demo</a>
@@ -86,11 +79,13 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+![그림2](https://user-images.githubusercontent.com/14977613/169700365-5044d1be-e9af-4c5e-972d-8969006480b5.png)
+
 
 최근 몇년 사이에 MSA(마이크로서비스 아키텍처)라는 소프트웨어 아키텍처가 매우 핫하게 다루어지고 있습니다. MSA가 등장하기 이전에는 대부분 모놀리스 아키텍처라는 방식으로 소프트웨어를 설계하였습니다. 모놀리스는 업무 로직이 하나의 어플리케이션 형태로 패키징되어 서비스되는 방식으로 단순하기 때문에 개발이 쉽고 빠르지만, 서비스가 확장되고 규모가 커지면서 한계점이 드러나게 되었습니다. 대표적으로는 일부의 모듈만 변경하여도 전체 어플리케이션 개발과 운영 프로세스에 영향을 주게 된다는 것과 확장이 어렵다는 점이 있습니다.
 
 이를 해결할 수 있는 대안책으로써 등장한 MSA방식은 애플리케이션의 로직을 작은 컴퍼넌트들로 분해하여, 최종적으로 이들을 조합해 솔루션을 제공하고 각 컴포넌트가 상호 독립적으로 배포되어 높은 유연성과 확장성을 가져갈 수 있게 되었습니다. 
+
 
 
 
