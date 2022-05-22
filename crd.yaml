@@ -1,0 +1,26 @@
+
+apiVersion: kiali.io/v1alpha1
+kind: Kiali
+metadata:
+  name: kiali
+spec:
+  auth:
+    strategy: anonymous
+  custom_dashboards:
+  - name: cite3-statistic
+    title: Cite3 statistic
+    # discoverOn: "cite3_info:statistic"
+    items:
+    - chart:
+        name: "Server active connections"
+        spans: 6
+        metricName: "cite3_info:statistic"
+        dataType: "raw"
+    - chart:
+        name: "test 2"
+        spans: 4
+        metricName: "envoy_listener_manager_total_listeners_active"
+        dataType: "raw"
+    prometheus:
+      url: "http://prometheus.istio-system.svc.cluster.local:9090"
+  
