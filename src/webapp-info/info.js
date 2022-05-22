@@ -20,10 +20,24 @@ var port = (process.env.PORT || '8010');
 
 // 쇼핑몰 앱 전체의 데이터(매출 등)을 관리하는 앱.
 client.collectDefaultMetrics({ prefix: 'cite3_info:' });
-const gauge = new client.Gauge({
-    name: 'cite3_info:statistic',
-    help: '쇼핑몰의 평균매출액',
-    labelNames: ['method'],
+const checkout_count = new client.Gauge({
+    name: 'cite3_info:checkout_count',
+    help: '체크아웃 횟수',
+  });
+
+  const purchased_product_count = new client.Gauge({
+    name: 'cite3_info:purchased_product_count',
+    help: '구매한 상품 개수',
+  });
+
+  const sum_price = new client.Gauge({
+    name: 'cite3_info:sum_price',
+    help: '구매 총액',
+  });
+
+  const avg_price = new client.Gauge({
+    name: 'cite3_info:avg_price',
+    help: '평균 구매 금액',
   });
 
 app.get('/metrics', async (request, response) => {
@@ -36,10 +50,10 @@ app.get('/metrics', async (request, response) => {
         console.log("저장된 info:(아래)");
         console.log(info);
         console.log(info["checkout_num"]);
-        gauge.labels('checkout_count').set(info["checkout_num"]);
-        gauge.labels('purchased_product_count').set(info["p_number"]);
-        gauge.labels('sum_price').set(info["sum_price"]);
-        gauge.labels('avg_price').set(info["avg_sales"]);        
+        checkout_count.set(info["checkout_num"]);
+        purchased_product_count.set(info["p_number"]);
+        sum_price.set(info["sum_price"]);
+        avg_price.set(info["avg_sales"]);        
     }
 
     response.send(metrics);

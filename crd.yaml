@@ -9,12 +9,12 @@ spec:
   custom_dashboards:
   - name: cite3-statistic
     title: Cite3 statistic
-    # discoverOn: "cite3_info:statistic"
+    # discoverOn: "cite3_info:checkout_count"
     items:
     - chart:
         name: "Server active connections"
         spans: 6
-        metricName: "cite3_info:statistic"
+        metricName: "cite3_info:checkout_count"
         dataType: "raw"
     - chart:
         name: "test 2"
