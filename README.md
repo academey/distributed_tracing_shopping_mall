@@ -38,7 +38,7 @@
     <!-- <a href="https://github.com/academey/distributed_tracing_shopping_mall"><strong>Explore the report »</strong></a> -->
     <br />
     <br />
-    <a href="https://github.com/academey/distributed_tracing_shopping_mall">View Demo</a>
+    <a href="https://www.youtube.com/watch?v=wYjs9WI1SF8">View Demo Video</a>
     ·
     <a href="https://github.com/academey/distributed_tracing_shopping_mall/issues">Report Bug</a>
     ·
@@ -238,13 +238,13 @@ Use this space to list resources you find helpful and would like to give credit 
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/academey/distributed_tracing_shopping_mall.svg?style=for-the-badge
 [contributors-url]: https://github.com/academey/distributed_tracing_shopping_mall/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
+[forks-shield]: https://img.shields.io/github/forks/academey/distributed_tracing_shopping_mall.svg?style=for-the-badge
 [forks-url]: https://github.com/academey/distributed_tracing_shopping_mall/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/academey/distributed_tracing_shopping_mall.svg?style=for-the-badge
 [stars-url]: https://github.com/academey/distributed_tracing_shopping_mall/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/academey/distributed_tracing_shopping_mall.svg?style=for-the-badge
 [issues-url]: https://github.com/academey/distributed_tracing_shopping_mall/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/academey/distributed_tracing_shopping_mall.svg?style=for-the-badge
 [license-url]: https://github.com/academey/distributed_tracing_shopping_mall/blob/master/LICENSE.txt
