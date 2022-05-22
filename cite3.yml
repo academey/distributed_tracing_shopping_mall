@@ -3,27 +3,21 @@ kind: Deployment
 metadata:
   name: search
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: search
-      tier: app
-      version: v1
   template:
     metadata:
-      annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "8001"
-        prometheus.io/path: "/metrics"
       labels:
         app: search
-        tier: app
-        version: v1
     spec:
       containers:
         - name: search
           image: ghcr.io/academey/distributed_tracing_shopping_mall-search:main
           imagePullPolicy: Always
+          ports:
+            - containerPort: 8001
+              protocol: TCP
           env:
           - name: PURCHASE_PORT
             value: "8002"
@@ -40,52 +34,13 @@ kind: Service
 metadata:
   name: search
 spec:
+  type: NodePort
   ports:
     - port: 8001
+      nodePort: 31001
       protocol: TCP
   selector:
     app: search
-  type: ClusterIP
-
----
-# error version search
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: search-error-version
-spec:
-  selector:
-    matchLabels:
-      app: search
-  replicas: 1
-  template: 
-    metadata:
-      labels:
-        app: search
-        version: error
-    spec:
-      containers:
-      - name: search
-        image: ghcr.io/academey/distributed_tracing_shopping_mall-search:error
-        imagePullPolicy: Always
-        env:
-        - name: PURCHASE_PORT
-          value: "8002"
-        - name: PURCHASE_HOST
-          value: "purchase" 
----
-apiVersion: networking.istio.io/v1alpha3
-kind: DestinationRule
-metadata:
-  name: circuit-breaker-for-the-search-service
-spec:
-  host: search.default.svc.cluster.local
-  trafficPolicy:
-    outlierDetection:
-      maxEjectionPercent: 50
-      consecutive5xxErrors: 2
-      interval: 10s
-      baseEjectionTime: 30s
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -147,13 +102,25 @@ spec:
           - containerPort: 3000
           env:
           - name: SEARCH_HOST
-            value: "search"
+            value: "http://search"
           - name: SEARCH_PORT
             value: "8001"
-          - name: PRODUCt_HOST
-            value: "product"
+          - name: PRODUCT_HOST
+            value: "http://product"
           - name: PRODUCT_PORT
             value: "8007"
+          - name: CART_HOST
+            value: "http://cart"
+          - name: CART_PORT
+            value: "8008"
+          - name: CHECKOUT_HOST
+            value: "http://checkout"
+          - name: CHECKOUT_PORT
+            value: "8009"
+          - name: AD_HOST
+            value: "http://ad"
+          - name: AD_PORT
+            value: "8003"
 ---
 apiVersion: v1
 kind: Service
@@ -203,85 +170,133 @@ spec:
           image: ghcr.io/academey/distributed_tracing_shopping_mall-loadgenerator:main
           imagePullPolicy: Always
           env:
-          - name: API_ENDPOINT
-            value: "http://search:8001/metrics-test"
+          - name: GET_ALL_RPODUCT_ENDPOINT
+            value: "http://product:8007/product"
+          - name: SEARCH_PRODUCT_ENDPOINT
+            value: "http://search:8001/search"
+          - name: GET_ONE_PRODUCT_ENDPOINT
+            value: "http://product:8007/product/1"
+          - name: SEE_AD_ENDPOINT
+            value: "http://ad:8003/ad"
+          - name: ADD_PRODUCT_TO_CART_ENDPOINT
+            value: "http://cart:8008/cart_add/1"
+          - name: CHECKOUT_CART_ENDPOINT
+            value: "http://checkout:8009/checkout"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ad
+spec:
+  selector:
+    matchLabels:
+      app: ad
+  template:
+    metadata:
+      labels:
+        app: ad
+    spec:
+      containers:
+        - name: ad
+          image: ghcr.io/academey/distributed_tracing_shopping_mall-ad:main
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8003
+              protocol: TCP
 
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ad
+spec:
+  type: NodePort
+  ports:
+    - port: 8003
+      nodePort: 31003
+      protocol: TCP
+  selector:
+    app: ad
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cart
+spec:
+  selector:
+    matchLabels:
+      app: cart
+  template:
+    metadata:
+      labels:
+        app: cart
+    spec:
+      containers:
+        - name: cart
+          image: ghcr.io/academey/distributed_tracing_shopping_mall-cart:main
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8008
+              protocol: TCP
+          env:
+          - name: PRODUCT_HOST
+            value: "product"
+          - name: PRODUCT_PORT
+            value: "8007"
+# ---
+# # error version cart
 # apiVersion: apps/v1
 # kind: Deployment
 # metadata:
-#   name: ad
-# spec:
-#   selector:
-#     matchLabels:
-#       app: ad
-#   template:
-#     metadata:
-#       labels:
-#         app: ad
-#     spec:
-#       containers:
-#         - name: ad
-#           image: ghcr.io/academey/distributed_tracing_shopping_mall-ad:main
-#           imagePullPolicy: Always
-#           ports:
-#             - containerPort: 8003
-#               protocol: TCP
-
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: ad
-# spec:
-#   type: NodePort
-#   ports:
-#     - port: 8003
-#       nodePort: 31003
-#       protocol: TCP
-#   selector:
-#     app: ad
-
-# ---
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: cart
+#   name: cart-error-version
 # spec:
 #   selector:
 #     matchLabels:
 #       app: cart
-#   template:
+#   replicas: 1
+#   template: 
 #     metadata:
 #       labels:
 #         app: cart
+#         version: error
 #     spec:
 #       containers:
-#         - name: cart
-#           image: ghcr.io/academey/distributed_tracing_shopping_mall-cart:main
-#           imagePullPolicy: Always
-#           ports:
-#             - containerPort: 8008
-#               protocol: TCP
-#           env:
-#           - name: PRODUCT_HOST
-#             value: "product"
-#           - name: PRODUCT_PORT
-#             value: "8007"
-
+#       - name: cart
+#         image: ghcr.io/academey/distributed_tracing_shopping_mall-cart:error
+#         imagePullPolicy: Always
+#         env:
+#         - name: PRODUCT_HOST
+#           value: "product"
+#         - name: PRODUCT_PORT
+#           value: "8007"
 # ---
-# apiVersion: v1
-# kind: Service
+# apiVersion: networking.istio.io/v1alpha3
+# kind: DestinationRule
 # metadata:
-#   name: cart
+#   name: circuit-breaker-for-the-cart-service
 # spec:
-#   type: NodePort
-#   ports:
-#     - port: 8008
-#       nodePort: 31008
-#       protocol: TCP
-#   selector:
-#     app: cart
+#   host: cart.default.svc.cluster.local
+#   trafficPolicy:
+#     outlierDetection:
+#       maxEjectionPercent: 50
+#       consecutive5xxErrors: 2
+#       interval: 10s
+#       baseEjectionTime: 30s
+# ---
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cart
+spec:
+  type: NodePort
+  ports:
+    - port: 8008
+      nodePort: 31008
+      protocol: TCP
+  selector:
+    app: cart
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -335,76 +350,76 @@ spec:
   selector:
     app: checkout
 ---
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: currency
-# spec:
-#   selector:
-#     matchLabels:
-#       app: currency
-#   template:
-#     metadata:
-#       labels:
-#         app: currency
-#     spec:
-#       containers:
-#         - name: currency
-#           image: ghcr.io/academey/distributed_tracing_shopping_mall-currency:main
-#           imagePullPolicy: Always
-#           ports:
-#             - containerPort: 8005
-#               protocol: TCP
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: currency
+spec:
+  selector:
+    matchLabels:
+      app: currency
+  template:
+    metadata:
+      labels:
+        app: currency
+    spec:
+      containers:
+        - name: currency
+          image: ghcr.io/academey/distributed_tracing_shopping_mall-currency:main
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8005
+              protocol: TCP
 
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: currency
-# spec:
-#   type: NodePort
-#   ports:
-#     - port: 8005
-#       nodePort: 31005
-#       protocol: TCP
-#   selector:
-#     app: currency
-# ---
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: email
-# spec:
-#   selector:
-#     matchLabels:
-#       app: email
-#   template:
-#     metadata:
-#       labels:
-#         app: email
-#     spec:
-#       containers:
-#         - name: email
-#           image: ghcr.io/academey/distributed_tracing_shopping_mall-email:main
-#           imagePullPolicy: Always
-#           ports:
-#             - containerPort: 8004
-#               protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: currency
+spec:
+  type: NodePort
+  ports:
+    - port: 8005
+      nodePort: 31005
+      protocol: TCP
+  selector:
+    app: currency
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: email
+spec:
+  selector:
+    matchLabels:
+      app: email
+  template:
+    metadata:
+      labels:
+        app: email
+    spec:
+      containers:
+        - name: email
+          image: ghcr.io/academey/distributed_tracing_shopping_mall-email:main
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8004
+              protocol: TCP
 
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: email
-# spec:
-#   type: NodePort
-#   ports:
-#     - port: 8004
-#       nodePort: 31004
-#       protocol: TCP
-#   selector:
-#     app: email
-# ---
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: email
+spec:
+  type: NodePort
+  ports:
+    - port: 8004
+      nodePort: 31004
+      protocol: TCP
+  selector:
+    app: email
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -417,6 +432,11 @@ spec:
     metadata:
       labels:
         app: product
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8001"
+        prometheus.io/path: "/metrics"
+        kiali.io/dashboards: hj-custom
     spec:
       containers:
         - name: product
@@ -439,47 +459,93 @@ spec:
       protocol: TCP
   selector:
     app: product
-# ---
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: shipping
-# spec:
-#   selector:
-#     matchLabels:
-#       app: shipping
-#   template:
-#     metadata:
-#       labels:
-#         app: shipping
-#     spec:
-#       containers:
-#         - name: shipping
-#           image: ghcr.io/academey/distributed_tracing_shopping_mall-shipping:main
-#           imagePullPolicy: Always
-#           ports:
-#             - containerPort: 8006
-#               protocol: TCP
-#           env:
-#           - name: CART_HOST
-#             value: "cart"
-#           - name: CART_PORT
-#             value: "8008"
-#           - name: PRODUCT_HOST
-#             value: "PRODUCT"
-#           - name: PRODUCT_PORT
-#             value: "8007"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shipping
+spec:
+  selector:
+    matchLabels:
+      app: shipping
+  template:
+    metadata:
+      labels:
+        app: shipping
+    spec:
+      containers:
+        - name: shipping
+          image: ghcr.io/academey/distributed_tracing_shopping_mall-shipping:main
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8006
+              protocol: TCP
+          env:
+          - name: CART_HOST
+            value: "cart"
+          - name: CART_PORT
+            value: "8008"
+          - name: PRODUCT_HOST
+            value: "PRODUCT"
+          - name: PRODUCT_PORT
+            value: "8007"
 
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: shipping
-# spec:
-#   type: NodePort
-#   ports:
-#     - port: 8006
-#       nodePort: 31006
-#       protocol: TCP
-#   selector:
-#     app: shipping
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shipping
+spec:
+  type: NodePort
+  ports:
+    - port: 8006
+      nodePort: 31006
+      protocol: TCP
+  selector:
+    app: shipping
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: info
+spec:
+  selector:
+    matchLabels:
+      app: info
+  template:
+    metadata:
+      labels:
+        app: info
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8001"
+        prometheus.io/path: "/metrics"
+        kiali.io/dashboards: hj-custom
+    spec:
+      containers:
+        - name: info
+          image: ghcr.io/academey/distributed_tracing_shopping_mall-info:main
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8010
+              protocol: TCP
+          env:
+          - name: SHIPPING_HOST
+            value: "SHIPPING"
+          - name: SHIPPING_PORT
+            value: "8006"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: info
+spec:
+  type: NodePort
+  ports:
+    - port: 8010
+      nodePort: 31010
+      protocol: TCP
+  selector:
+    app: info
+---
