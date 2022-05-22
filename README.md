@@ -28,6 +28,11 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
+
+  
+  ![그림1](https://user-images.githubusercontent.com/14977613/169700253-a99ae1ab-2705-4b63-a6ef-4999471e584a.png)
+
+ 
   <a href="https://github.com/academey/distributed_tracing_shopping_mall">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
