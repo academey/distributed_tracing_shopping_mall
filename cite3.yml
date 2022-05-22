@@ -168,8 +168,6 @@ spec:
         - name: loadgenerator
           image: ghcr.io/academey/distributed_tracing_shopping_mall-loadgenerator:main
           imagePullPolicy: Always
-          ports:
-          - containerPort: 8011
           env:
           - name: GET_ALL_RPODUCT_ENDPOINT
             value: "http://product:8007/product"
@@ -183,19 +181,6 @@ spec:
             value: "http://cart:8008/cart_add/1"
           - name: CHECKOUT_CART_ENDPOINT
             value: "http://checkout:8009/checkout"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: loadgenerator
-spec:
-  type: NodePort
-  ports:
-    - port: 8011
-      nodePort: 31011
-      protocol: TCP
-  selector:
-    app: loadgenerator
 ---
 apiVersion: apps/v1
 kind: Deployment
