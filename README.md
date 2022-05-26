@@ -37,7 +37,7 @@
     <br />
     <!-- <a href="https://github.com/academey/distributed_tracing_shopping_mall"><strong>Explore the report »</strong></a> -->
     <br />
-    <br />
+    <br />    
     <a href="https://www.youtube.com/watch?v=wYjs9WI1SF8">View Demo Video</a>
     ·
     <a href="https://github.com/academey/distributed_tracing_shopping_mall/issues">Report Bug</a>
@@ -45,11 +45,13 @@
     <a href="https://github.com/academey/distributed_tracing_shopping_mall/issues">Request Feature</a>
   </p>
 </div>
-[![IMAGE ALT TEXT](http://img.youtube.com/vi/wYjs9WI1SF8/0.jpg)](http://www.youtube.com/watch?v=wYjs9WI1SF8 "Video Title")
 
+<br />
 
+## View Demo Video (Click below image)
 
-
+[![IMAGEALTTEXT](http://img.youtube.com/vi/wYjs9WI1SF8/0.jpg)](http://www.youtube.com/watch?v=wYjs9WI1SF8)
+<br />
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
