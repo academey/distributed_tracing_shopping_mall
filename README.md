@@ -50,7 +50,7 @@
 
 ## View Demo Video (Click below image)
 
-[![IMAGEALTTEXT](http://img.youtube.com/vi/wYjs9WI1SF8/0.jpg)](http://www.youtube.com/watch?v=wYjs9WI1SF8)
+[![IMAGEALTTEXT](http://img.youtube.com/vi/wYjs9WI1SF8/maxresdefault.jpg)](http://www.youtube.com/watch?v=wYjs9WI1SF8)
 <br />
 <!-- TABLE OF CONTENTS -->
 <details>
