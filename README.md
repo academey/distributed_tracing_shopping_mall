@@ -45,6 +45,8 @@
     <a href="https://github.com/academey/distributed_tracing_shopping_mall/issues">Request Feature</a>
   </p>
 </div>
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/wYjs9WI1SF8/0.jpg)](http://www.youtube.com/watch?v=wYjs9WI1SF8 "Video Title")
+
 
 
 
@@ -212,7 +214,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 - [Github Registry workflow](https://docs.github.com/en/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions#upgrading-a-workflow-that-accesses-ghcrio)
 - [k8s frontend communicate with backend](https://kubernetes.io/ko/docs/tasks/access-application-cluster/connecting-frontend-backend/#%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0)
 - [Node js with prometheus](https://developers.redhat.com/blog/2018/12/21/monitoring-node-js-applications-on-openshift-with-prometheus#install_prometheus)
-- [Vercel commerec](https://github.com/vercel/commerce)
+- [Vercel commerce](https://github.com/vercel/commerce)
 - [Best-README-Template](https://github.com/othneildrew/Best-README-Template)
 - [k6 api load testing](https://k6.io/docs/testing-guides/api-load-testing/)
 
